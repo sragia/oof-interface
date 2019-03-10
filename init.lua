@@ -17,17 +17,41 @@ ns.defaults = {
             bottom = 0
         }
     },
+    points = {
+        TOPLEFT = 'Top Left',
+        TOP = 'Top',
+        TOPRIGHT = 'Top Right',
+        RIGHT = 'Right',
+        BOTTOMRIGHT = 'Bottom Right',
+        BOTTOM = 'Bottom',
+        BOTTOMLEFT = 'Bottom Left',
+        LEFT = 'Left',
+        CENTER = 'Center',
+    }
 }
 ns.L = {}
 ns.UIElements = {}
 ns.options = {}
+ns.mover = {}
 local initFiles = {}
+
+local modules = {}
+
+function ns.CreateNewModule(name)
+    local object = {}
+    modules[#modules + 1] = {
+        name = name,
+        object = object
+    }
+    return object
+end
+
 function ns.Initialize(func)
     initFiles[#initFiles + 1] = func
 end
 local function InitializeFiles()
-    for _,func in ipairs(initFiles) do
-        func()
+    for _, m in ipairs(modules) do
+        m.object:Initialize()
     end
 end
 
@@ -35,17 +59,25 @@ local defaults = {
     profile = {
         hello = 'hello',
         minimap = {
-            width = 200,
-            height = 300,
+            size = 400,
             scale = 1,
-            shape = "rectangle"
+            shape = "rectangle",
+            aspect = "1x1",
+            left = 0,
+            bottom = 0,
+            elements = {
+                GameTimeFrame = {
+                    point = "TOPRIGHT",
+                    x = 20,
+                    y = -2
+                }
+            }
         }
     },
     global = {
         olaa = 'olaa'
     }
 }
-
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("ADDON_LOADED")

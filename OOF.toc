@@ -16,9 +16,9 @@ Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 
 #Core
-init.lua
+Init.lua
 UIElements\UIElements.xml
 locales.xml
-main.lua
+Main.lua
 Options\options.xml
 Elements\elements.xml

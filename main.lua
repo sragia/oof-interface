@@ -1,8 +1,7 @@
 local addon, ns = ...
 
+local obj = ns.CreateNewModule("main")
 
-ns.Initialize(
-    function()
+function obj:Initialize()
 
-    end
-);
+end
