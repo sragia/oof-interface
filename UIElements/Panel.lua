@@ -15,7 +15,6 @@ function obj:Initialize()
     end,
     SetText = function(self,text)
       self.text:SetText(text)
-      print(text,'123')
     end,
     SetFontSize = function(self, size)
       self.text:SetFont(ns.defaults.font, size)

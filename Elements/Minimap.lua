@@ -11,8 +11,9 @@ function obj:Initialize()
   local sortOrder = 10
   local db = ns.DB.profile.minimap
   local M = _G.Minimap
+  local UIElements = ns.UIElements
 
-  local function Resize()
+  function obj:Resize()
     M:SetSize(db.size, db.size)
     if db.shape == "rectangle" then
       local w, h = strsplit("x",db.aspect or "1x1")
@@ -27,7 +28,7 @@ function obj:Initialize()
         right = left
       end
       Minimap:SetHitRectInsets(left, right, top, bottom)
-      Minimap:SetClampRectInsets(db.size, db.size, db.size, db.size)
+      Minimap:SetClampRectInsets(-left, -right, -top, -bottom)
     end
   end
 
@@ -70,6 +71,28 @@ function obj:Initialize()
 
   mover.CreateMovableElement(L['Minimap'], M, Move)
 
+  local function GetMinimapLeftBottom(point)
+    local left, bottom = 0, 0
+
+    if db.shape == 'rectangle' then
+      local aspect = db.aspect
+      local w,h = strsplit('x',aspect)
+      local calcLeft = w < h and  (db.size - (db.size / (h / w))) / 2 or 0
+      local calcBottom = w > h and (db.size - (db.size / (w / h))) / 2 or 0
+      if point and point:find('TOP') then
+        bottom = -calcBottom
+      elseif point and point:find('BOTTOM') then
+        bottom = calcBottom
+      end
+      if point and point:find('RIGHT') then
+        left = -calcLeft
+      elseif point and point:find('LEFT') then
+        left = calcLeft
+      end
+    end
+    return left, bottom
+  end
+
   local function GetXYOffsetOptions(frameName)
     local t = {
       {
@@ -99,10 +122,78 @@ function obj:Initialize()
           db.elements[frameName].y = y
           obj:SkinMinimap()
         end,
-      }
+      },
+      {
+        type = 'select',
+        values = ns.defaults.points,
+        name = L['Anchor Point'],
+        set = function(_, value)
+          db.elements[frameName].point = value
+          obj:Refresh()
+        end,
+        get = function() return db.elements[frameName].point end,
+        order = 1,
+      },
     }
     return t
   end
+
+  local function GetFontOptions(frameName)
+    local t = {
+      {
+        type = 'select',
+        order = 17,
+        dialogControl = 'LSM30_Font',
+        name = L['Font'],
+        values = ns.LSM:HashTable('font'),
+        get = function()
+          return db.elements[frameName].font
+        end,
+        set = function(self, key)
+          db.elements[frameName].font = key
+          obj:Refresh()
+        end
+      },
+      {
+        name = L['Font Size'],
+        order = '18',
+        type = 'range',
+        min = 5,
+        max = 60,
+        step = 1,
+        get = function()
+          return db.elements[frameName].fontSize
+        end,
+        set = function(self, x)
+          db.elements[frameName].fontSize = x
+          obj:Refresh()
+        end,
+      },
+    }
+    return t
+  end
+
+  local function BasicSetter(self)
+    local f = _G[self.frame]
+    local saved = db.elements[self.frame]
+    local shape = db.shape
+    local aspect = db.aspect
+    local X, Y = saved.x, saved.y
+    local left, top = GetMinimapLeftBottom(saved.point)
+    X = X + left
+    Y = Y + top
+    f:ClearAllPoints()
+    f:SetPoint(saved.point,X, Y)
+  end
+
+  local onHoverFunctions = {}
+  local onLeaveFunction = {}
+  M:SetScript('OnEnter',function()
+    for _, func in ipairs(onHoverFunctions) do func() end
+  end)
+  M:SetScript('OnLeave',function()
+    for _, func in ipairs(onLeaveFunction) do func() end
+  end)
 
   local minimapFrames = {
     {
@@ -119,7 +210,7 @@ function obj:Initialize()
     },
     {
       frame = "MinimapZoneTextButton",
-      hide = false,
+      hide = true,
     },
     {
       frame = "MiniMapMailBorder",
@@ -128,6 +219,19 @@ function obj:Initialize()
     {
       frame = "MiniMapInstanceDifficulty",
       hide = false,
+      setter = BasicSetter,
+      hasXY = true,
+      init = function(self)
+        _G[self.frame]:SetParent(M)
+      end,
+      options = {
+        {
+          type = 'description',
+          name = L['Instance Difficulty'],
+          width = 'full',
+          fontSize = 'medium'
+        },
+      }
     },
     {
       frame = "MinimapNorthTag",
@@ -141,56 +245,21 @@ function obj:Initialize()
     {
       frame = "GameTimeFrame",
       hide = false,
-      setter = function(self)
-        local f = _G[self.frame]
-        local saved = db.elements[self.frame]
-        local shape = db.shape
-        local aspect = db.aspect
-        local X, Y = saved.x, saved.y
-        if shape == "rectangle" then
-          local w,h = strsplit('x',aspect)
-          local top = w > h and  (db.size - (db.size / (w / h))) / 2 or 0
-          local left = w < h and (db.size - (db.size / (h / w))) / 2 or 0
-          local x, y = 0, 0
-          if saved.point:find('TOP') then
-            y = y - top
-          elseif saved.point:find('BOTTOM') then
-            y = y + top
-          end
-          if saved.point:find('LEFT') then
-            x = x + left
-          elseif saved.point:find('RIGHT') then
-            x = x - left
-          end
-          X = X + x
-          Y = Y + y
-        end
-        f:ClearAllPoints()
-        f:SetPoint(saved.point,X, Y)
-      end,
+      setter = BasicSetter,
       hasXY = true,
       options = {
         {
           type = 'description',
           name = L['Calendar'],
           width = 'full',
-        },
-        {
-          type = 'select',
-          values = ns.defaults.points,
-          name = L['Anchor Point'],
-          set = function(_, value)
-            db.elements['GameTimeFrame'].point = value
-            obj:SkinMinimap()
-          end,
-          get = function() return db.elements['GameTimeFrame'].point end,
-          order = 1,
+          fontSize = 'medium'
         },
       }
     },
     {
       frame = "GuildInstanceDifficulty",
       hide = false,
+      setter = function() end,
     },
     {
       frame = "MiniMapChallengeMode",
@@ -208,11 +277,98 @@ function obj:Initialize()
       frame = "MiniMapTracking",
       hide = false,
     },
-
-
+    {
+      frame = "TimeManagerClockButton",
+      hide = true,
+    },
+    {
+      frame = 'OofMinimapClock',
+      init = function(self)
+        local f = UIElements.CreateFrame('Text',self.frame,M)
+        f:SetScript("OnMouseDown",function()
+          TimeManager_Toggle()
+        end)
+        local lastCheck = 0
+        f:SetScript("OnUpdate",function(self)
+          local t = time()
+          if (t - lastCheck >= 30) then
+            lastCheck = t
+            local isLocal = GetCVar('timeMgrUseLocalTime') == 1
+            local is24h = GetCVar('timeMgrUseMilitaryTime') == 1
+            local formatedString = ""
+            t = isLocal and t or GetServerTime()
+            local hour = is24h and date('%H',t) or date('%I', t)
+            local minute = date('%M',t)
+            formatedString = string.format("%02d:%02d",hour,minute)
+            self:SetText(formatedString)
+          end
+        end)
+        M.clock = f
+      end,
+      setter = function(self)
+        local f = M.clock
+        local saved = db.elements[self.frame]
+        f:ClearAllPoints()
+        local left, bottom = GetMinimapLeftBottom(saved.point)
+        f:SetPoint(saved.point,left + saved.x,bottom + saved.y)
+        f:SetSize(50,25);
+        f:SetFont(ns.LSM:Fetch('font',saved.font),saved.fontSize,'OUTLINE')
+      end,
+      hide = false,
+      options = {
+        {
+          type = 'description',
+          name = L['Clock'],
+          width = 'full',
+          fontSize = 'medium'
+        },
+      },
+      hasXY = true,
+      hasFontOptions = true,
+    },
+    {
+      frame = 'OofMinimapZoneText',
+      init = function(self)
+        local f = UIElements.CreateFrame("Text", self.frame, M)
+        table.insert(onHoverFunctions, function()
+          f:Show()
+          f:SetText('Zone')
+        end)
+        table.insert(onLeaveFunction, function()
+          f:Hide()
+        end)
+        M.zoneText = f
+        f:Hide()
+      end,
+      setter = function(self)
+        BasicSetter(self)
+        local saved = db.elements[self.frame]
+        local f = _G[self.frame]
+        f:SetFont(ns.LSM:Fetch('font',saved.font),saved.fontSize,'OUTLINE')
+        f:SetSize(80, 25)
+      end,
+      hasXY = true,
+      hasFontOptions = true,
+      options = {
+        {
+          type = 'description',
+          name = L['Zone Text'],
+          width = 'full',
+          fontSize = 'medium'
+        },
+      },
+    }
   }
 
+  for _, info in ipairs(minimapFrames) do
+    if info.init then
+      info:init()
+    end
+  end
 
+  if not IsAddOnLoaded("Blizzard_TimeManager") then
+    LoadAddOn('Blizzard_TimeManager')
+  end
 
   function obj:SkinMinimap()
     local bg = M.bg or CreateFrame("Frame",nil, UIParent)
@@ -260,18 +416,23 @@ function obj:Initialize()
 
     -- frames
     for _, f in ipairs(minimapFrames) do
-      if f.hide then
+      if f.hide and _G[f.frame] then
         _G[f.frame]:Hide()
       elseif f.setter then
         f:setter()
       end
     end
+
+    -- my frames
+
     obj:Reshape()
   end
 
-  obj:SkinMinimap()
-  Resize()
-
+  function obj:Refresh()
+    self:SkinMinimap()
+    self:Resize()
+  end
+  obj:Refresh()
 
 
 
@@ -293,7 +454,7 @@ function obj:Initialize()
         get = function() return db.shape end,
         set = function(self, value)
           db.shape = value
-          obj:Reshape()
+          obj:Refresh()
         end,
       },
       aspect = {
@@ -313,8 +474,7 @@ function obj:Initialize()
         get = function() return db.aspect end,
         set = function(self, value)
           db.aspect = value
-          obj:Reshape()
-          Resize()
+          obj:Refresh()
         end,
       },
       size = {
@@ -327,8 +487,7 @@ function obj:Initialize()
         get = function() return db.size end,
         set = function(self, size)
           db.size = size
-          Resize()
-          obj:Reshape()
+          obj:Refresh()
         end,
       },
       elements = {
@@ -350,9 +509,17 @@ function obj:Initialize()
         options.args[info.frame .. i] = o
         i = i + 1
       end
+      if info.hasFontOptions then
+        local fontOptions = GetFontOptions(info.frame)
+        for _, t in ipairs(fontOptions) do
+          t.order = elementOrder + i
+          options.args[info.frame..i] = t
+          i = i + 1
+        end
+        i = i + 1
+      end
       if info.hasXY then
         local xyOptions = GetXYOffsetOptions(info.frame)
-        TEST1 = xyOptions
         for _, t in ipairs(xyOptions) do
           t.order = elementOrder + i
           options.args[info.frame..i] = t

@@ -15,7 +15,7 @@ function obj:Initialize()
       self.text:SetText(text)
     end,
     SetFontSize = function(self, size)
-      self.text:SetFont(ns.defaults.font, size)
+      self.text:SetFont(ns.defaults.font, size, 'OUTLINE')
     end,
     SetFont = function(self,font,size,flags)
       self.text:SetFont(font,size,flags)
@@ -27,9 +27,11 @@ function obj:Initialize()
     textFrame:SetParent(parent)
     -- Text
     local text = textFrame.text or textFrame:CreateFontString(nil, "OVERLAY")
-    text:SetFont(ns.defaults.font,11)
+    text:SetFont(ns.defaults.font,11,'OUTLINE')
     text:SetPoint("CENTER")
+    text:SetWidth(0)
     textFrame.text = text
+    textFrame:SetSize(0,0)
 
     for name, func in pairs(methods) do
       textFrame[name] = func

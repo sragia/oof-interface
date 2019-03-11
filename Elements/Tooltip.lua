@@ -29,7 +29,6 @@ function obj:Initialize()
       },
     }
   }
-  print('run231')
   opt.RegisterListItem(parentId, id, text, sortOrder, options)
 end
 

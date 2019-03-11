@@ -75,7 +75,6 @@ function obj:Initialize()
   end
 
   local function AddButtonToList(parentId, id,optionsTable)
-  print('addlist')
     local uid = parentId .. id
     local button = buttonCache[uid]
     local r, g, b, a = 0, 0, 0, 1
@@ -92,7 +91,6 @@ function obj:Initialize()
       button.sortOrder = data.sortOrder
       button.optionsTable = optionsTable or data.optionsTable
       button:SetHeight(20)
-      print(button)
       button.id = id
       button:SetScript("OnClick",function(self)
         RemoveHighlight()
@@ -108,7 +106,6 @@ function obj:Initialize()
     local i = 0
     for id, btn in spairs(buttonCache, function(t,a,b) return t[a].sortOrder < t[b].sortOrder end) do
       if btn.shown then
-        print('show')
         i = i + 1
         btn:ClearAllPoints()
         local yOffset = 5 + (i-1)  + (i-1) * 20

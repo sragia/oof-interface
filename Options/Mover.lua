@@ -99,8 +99,6 @@ function obj:Initialize()
           xOffs,
           yOffs
         )
-        print(container:GetPoint())
-        print(container:GetSize())
         xOffsFrame:SetText(string.format("%i",xOffs))
         yOffsFrame:SetText(string.format("%i",yOffs))
         container.setter(xOffs,yOffs)

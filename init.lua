@@ -70,6 +70,23 @@ local defaults = {
                     point = "TOPRIGHT",
                     x = 20,
                     y = -2
+                },
+                OofMinimapClock = {
+                    point = "BOTTOM",
+                    x = 0,
+                    y = 0,
+                    fontSize = 13,
+                },
+                MiniMapInstanceDifficulty = {
+                    point = "TOPLEFT",
+                    x = 0,
+                    y = 0,
+                },
+                OofMinimapZoneText = {
+                    point = "TOP",
+                    x = 0,
+                    y = 0,
+                    fontSize = 12
                 }
             }
         }
@@ -85,8 +102,10 @@ f:SetScript("OnEvent", function(self,event,addonName)
     if addonName == addon then
         ns.DB = LibStub("AceDB-3.0"):New("OOF_DB", defaults)
         OOF_DBs = ns.DB
-        InitializeFiles()
+        C_Timer.After(0.5, InitializeFiles)
+        -- InitializeFiles()
         self:UnregisterEvent("ADDON_LOADED")
     end
 end)
 
+ns.LSM = LibStub('LibSharedMedia-3.0');
