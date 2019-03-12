@@ -46,6 +46,14 @@ function ns.CreateNewModule(name)
     return object
 end
 
+function ns.GetModule(name)
+    for _, module in ipairs(modules) do
+        if module.name == name then
+            return module.object
+        end
+    end
+end
+
 function ns.Initialize(func)
     initFiles[#initFiles + 1] = func
 end
@@ -89,7 +97,10 @@ local defaults = {
                     fontSize = 12
                 }
             }
-        }
+        },
+        skins = {
+            AdventureGuide = true
+        },
     },
     global = {
         olaa = 'olaa'
@@ -102,8 +113,7 @@ f:SetScript("OnEvent", function(self,event,addonName)
     if addonName == addon then
         ns.DB = LibStub("AceDB-3.0"):New("OOF_DB", defaults)
         OOF_DBs = ns.DB
-        C_Timer.After(0.5, InitializeFiles)
-        -- InitializeFiles()
+        InitializeFiles()
         self:UnregisterEvent("ADDON_LOADED")
     end
 end)

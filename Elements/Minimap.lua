@@ -433,7 +433,7 @@ function obj:Initialize()
     self:Resize()
   end
   obj:Refresh()
-
+  C_Timer.After(0.2,function() obj:Refresh() end)
 
 
   -- OPTIONS CONFIG --

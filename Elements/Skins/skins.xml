@@ -1,8 +1,4 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
-
-<Script file="Minimap.lua"/>
-<Script file="Tooltip.lua"/>
-<Script file="Skins.lua"/>
-<Include file="Skins\skins.xml"/>
+  <Script file="AdventureGuide.lua"/>
 </Ui>
