@@ -5,11 +5,24 @@ function obj:Initialize()
   local UIElements = ns.UIElements
   local opt = ns.options
   local switchContainer = opt.container.buttonContainer
-
+  local L = ns.L
+  ns.switchBoard = {}
   local switchBtns = {
     { -- 1
       text = "Elements",
       id = 'elements'
+    },
+    { -- 2
+      text = L['Media'],
+      id = 'media',
+      removeList = true,
+      optionsTable = {
+        type = "group",
+        name = L["Media"],
+        args = {
+        }
+      },
+      order = 0
     },
     { -- 4
       text = "Profiles",
@@ -37,4 +50,25 @@ function obj:Initialize()
     btn:SetScript("OnClick", function() opt.SwitchLists(data.id, data.removeList,data.optionsTable) end)
     i = i + 1
   end
+
+  local function AddToOptionsTable(id, selfId,  options)
+    local optionsTable
+    local order = 0
+    for _, data in ipairs(switchBtns) do
+      if data.id == id then
+        optionsTable = data.optionsTable
+        order = data.order
+        data.order = data.order + 100
+        break
+      end
+    end
+
+    for i, v in pairs(options) do
+      v.order = v.order + order
+      optionsTable.args[selfId .. i] = v
+    end
+
+  end
+  ns.switchBoard.AddToOptionsTable = AddToOptionsTable
+
 end

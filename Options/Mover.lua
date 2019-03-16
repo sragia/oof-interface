@@ -205,6 +205,31 @@ function obj:Initialize()
   openBtn:SetScript("OnClick",ToggleMover)
 
 
+  -- TEMP
+  local fstack = UIElements.CreateFrame("Button", nil, options.container.titleBar,{ justification = "CENTER"})
+  fstack:SetPoint("TOPRIGHT", openBtn, "TOPLEFT", -2,0)
+  fstack:SetPoint("BOTTOMRIGHT", openBtn, "BOTTOMLEFT", -2, 0)
+  fstack:SetWidth(80)
+  fstack:SetText(L["/fstack"])
+  fstack:ApplyBackdrop()
+  fstack:SetScript("OnClick",function()
+    LoadAddOn("Blizzard_DebugTools");
+		FrameStackTooltip_ToggleDefaults();
+  end )
+
+  local reload = UIElements.CreateFrame("Button", nil, options.container.titleBar,{ justification = "CENTER"})
+  reload:SetPoint("TOPRIGHT", fstack, "TOPLEFT", -2,0)
+  reload:SetPoint("BOTTOMRIGHT", fstack, "BOTTOMLEFT", -2, 0)
+  reload:SetWidth(80)
+  reload:SetText(L["Reload"])
+  reload:ApplyBackdrop()
+  reload:SetScript("OnClick",function()
+    ReloadUI();
+  end )
+
+  -- TEMP
+
+
 
   function ns.mover.CreateMovableElement(name, targetContainer, setter)
     containers[#containers + 1] = {

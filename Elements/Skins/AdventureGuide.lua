@@ -16,6 +16,7 @@ function obj:Initialize()
     LoadAddOn('Blizzard_EncounterJournal')
     local mainFrame = _G['EncounterJournal']
     SF.ApplyBackdrop(mainFrame)
+    ns.skins.SkinClose(mainFrame.CloseButton)
     -- SF.ApplyBackdrop(mainFrame.TitleBg)
   end
   if db then

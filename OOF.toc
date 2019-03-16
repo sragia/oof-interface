@@ -19,8 +19,10 @@ Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 
 #Core
 Init.lua
-UIElements\UIElements.xml
 locales.xml
+CoreFunctions.lua
+UIElements\UIElements.xml
 Main.lua
 Options\options.xml
 Elements\elements.xml
+Media\media.xml

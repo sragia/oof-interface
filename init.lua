@@ -101,11 +101,35 @@ local defaults = {
         skins = {
             AdventureGuide = true
         },
+        chat = {
+            container = {
+                width = 400,
+                height = 200,
+                point = "BOTTOMLEFT",
+                x = 0,
+                y = 0,
+            },
+            hideSideButtons = false,
+            hideSocialButton = false,
+            tabPos = 'TOP',
+            editPos = 'BOTTOM',
+            font = 'CharlesWright',
+            flag = 'NONE',
+        },
+        media = {
+            fonts = {
+                defaultFont = 'CharlesWright',
+                replaceBlizz = true
+            }
+        },
+        CUSTOMSAVE = {}
     },
     global = {
         olaa = 'olaa'
     }
 }
+
+
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("ADDON_LOADED")
@@ -115,6 +139,7 @@ f:SetScript("OnEvent", function(self,event,addonName)
         OOF_DBs = ns.DB
         InitializeFiles()
         self:UnregisterEvent("ADDON_LOADED")
+        SAVE_VARS = ns.DB.profile.CUSTOMSAVE
     end
 end)
 

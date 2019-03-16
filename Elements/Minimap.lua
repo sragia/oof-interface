@@ -293,8 +293,8 @@ function obj:Initialize()
           local t = time()
           if (t - lastCheck >= 30) then
             lastCheck = t
-            local isLocal = GetCVar('timeMgrUseLocalTime') == 1
-            local is24h = GetCVar('timeMgrUseMilitaryTime') == 1
+            local isLocal = GetCVar('timeMgrUseLocalTime') == "1"
+            local is24h = GetCVar('timeMgrUseMilitaryTime') == "1"
             local formatedString = ""
             t = isLocal and t or GetServerTime()
             local hour = is24h and date('%H',t) or date('%I', t)

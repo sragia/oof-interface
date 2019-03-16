@@ -2,10 +2,14 @@ local addon, ns = ...
 local L = ns.L
 local obj = ns.CreateNewModule("Elements_Skins")
 local registeredSkins = {}
+local UI = ns.UIElements
 
 ns.skins = {
   RegisterSkin = function(key, displayName)
     table.insert(registeredSkins, { displayName = displayName, key = key })
+  end,
+  SkinClose = function(frame)
+    UI.defaultFunc.ApplyBackdrop(frame)
   end,
 }
 
