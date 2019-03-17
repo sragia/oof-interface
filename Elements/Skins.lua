@@ -44,7 +44,7 @@ function obj:Initialize()
       get = function() return db[skin.key] end,
       set = function(self,value)
         db[skin.key] = value
-        local skinModule = ns.GetModule('Skins_'..skin.key)
+        local skinModule = ns:GetModule('Skins_'..skin.key)
         if skinModule then
           skinModule:Refresh()
         end

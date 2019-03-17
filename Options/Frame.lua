@@ -37,17 +37,18 @@ function obj:Initialize()
   end
 
   local frame = CreateFrame("Frame","OOF_OptionsFrame",UIParent)
-    frame:SetPoint("CENTER",0,0)
-    frame:SetSize(900,600)
-    ApplyBackdrop(frame)
-    frame:SetMovable(true)
-    frame:EnableMouse(true)
-    frame:RegisterForDrag("LeftButton")
-    frame:SetScript("OnDragStart", frame.StartMoving)
-    frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
-    opt.container = frame
+  frame:SetPoint("CENTER",0,0)
+  frame:SetSize(900,600)
+  ApplyBackdrop(frame)
+  frame:SetMovable(true)
+  frame:EnableMouse(true)
+  frame:RegisterForDrag("LeftButton")
+  frame:SetScript("OnDragStart", frame.StartMoving)
+  frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+  frame:SetFrameStrata('HIGH')
+  opt.container = frame
 
-    local function CreatePanel()
+  local function CreatePanel()
     local f = CreateFrame("Frame",nil,frame)
     ApplyBackdrop(f,0,0,0,0.4)
     return f

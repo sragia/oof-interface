@@ -1,7 +1,10 @@
 local addon, ns = ...
+Oof = {}
 ns.defaults = {
     -- Default Stuff
     font = [[Interface/Addons/Oof/Media/font/CharlesWright.ttf]],
+    fontSize = 12,
+    fontFlag = "OUTLINE",
     logoLarge = [[Interface/Addons/Oof/Media/icons/logo-large]],
     logoSmall = [[Interface/Addons/Oof/Media/icons/logo-small]],
     backdrop = {
@@ -27,6 +30,12 @@ ns.defaults = {
         BOTTOMLEFT = 'Bottom Left',
         LEFT = 'Left',
         CENTER = 'Center',
+    },
+    zoomedTexCoords = {
+        0.08,
+        0.92,
+        0.08,
+        0.92
     }
 }
 ns.L = {}
@@ -46,13 +55,16 @@ function ns.CreateNewModule(name)
     return object
 end
 
-function ns.GetModule(name)
+function ns.GetModule(self,name)
     for _, module in ipairs(modules) do
         if module.name == name then
             return module.object
         end
     end
+    print('nothing')
 end
+
+Oof.GetModule = ns.GetModule
 
 function ns.Initialize(func)
     initFiles[#initFiles + 1] = func
@@ -121,6 +133,61 @@ local defaults = {
                 defaultFont = 'CharlesWright',
                 replaceBlizz = true
             }
+        },
+        objectiveTracker = {
+            point = "TOPRIGHT",
+            x = 0,
+            y = -200,
+            height = 400,
+            scale = 1,
+        },
+        buffsdebuffs = {
+            font = "CharlesWright",
+            countXOffset = 0,
+            countYOffset = 0,
+            timeXOffset = 0,
+            timeYOffset = 0,
+            fontOutline = "NONE",
+            buffs = {
+                point = "TOPRIGHT",
+                x = -200,
+                y = -10,
+                sortMethod = "TIME",
+                seperateOwn = 1,
+                sortDir = '-',
+                maxWraps = 3,
+                wrapAfter = 12,
+                growthDirection = 'LEFT_DOWN',
+                horizontalSpacing = 1,
+                size = 28,
+                verticalSpacing = 11,
+                durationFontSize = 12,
+                countFontSize = 14,
+                countXOffset = 0,
+                countYOffset = 0,
+                timeXOffset = 0,
+                timeYOffset = 0,
+            },
+            debuffs = {
+                point = "TOPRIGHT",
+                x = -200,
+                y = -100,
+                sortMethod = "TIME",
+                seperateOwn = 1,
+                sortDir = '-',
+                maxWraps = 3,
+                wrapAfter = 12,
+                growthDirection = 'LEFT_DOWN',
+                horizontalSpacing = 1,
+                size = 36,
+                verticalSpacing = 11,
+                durationFontSize = 12,
+                countFontSize = 14,
+                countXOffset = 0,
+                countYOffset = 0,
+                timeXOffset = 0,
+                timeYOffset = 0,
+            },
         },
         CUSTOMSAVE = {}
     },

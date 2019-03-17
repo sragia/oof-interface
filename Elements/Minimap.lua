@@ -224,13 +224,8 @@ function obj:Initialize()
       init = function(self)
         _G[self.frame]:SetParent(M)
       end,
+      optionsName = L['Instance Difficulty'],
       options = {
-        {
-          type = 'description',
-          name = L['Instance Difficulty'],
-          width = 'full',
-          fontSize = 'medium'
-        },
       }
     },
     {
@@ -247,13 +242,8 @@ function obj:Initialize()
       hide = false,
       setter = BasicSetter,
       hasXY = true,
+      optionsName = L['Calendar'],
       options = {
-        {
-          type = 'description',
-          name = L['Calendar'],
-          width = 'full',
-          fontSize = 'medium'
-        },
       }
     },
     {
@@ -315,13 +305,8 @@ function obj:Initialize()
         f:SetFont(ns.LSM:Fetch('font',saved.font),saved.fontSize,'OUTLINE')
       end,
       hide = false,
+      optionsName = L['Clock'],
       options = {
-        {
-          type = 'description',
-          name = L['Clock'],
-          width = 'full',
-          fontSize = 'medium'
-        },
       },
       hasXY = true,
       hasFontOptions = true,
@@ -349,13 +334,8 @@ function obj:Initialize()
       end,
       hasXY = true,
       hasFontOptions = true,
+      optionsName = L['Zone Text'],
       options = {
-        {
-          type = 'description',
-          name = L['Zone Text'],
-          width = 'full',
-          fontSize = 'medium'
-        },
       },
     }
   }
@@ -503,17 +483,26 @@ function obj:Initialize()
   for _, info in ipairs(minimapFrames) do
 
     if info.options then
+      options.args[info.frame] = {
+        type = "group",
+        name = info.optionsName or info.frame,
+        order = elementOrder,
+        args = {
+
+        }
+      }
+      local frameOptions = options.args[info.frame].args
       local i = 0
       for _, o in ipairs(info.options) do
         o.order = elementOrder + i
-        options.args[info.frame .. i] = o
+        frameOptions[info.frame .. i] = o
         i = i + 1
       end
       if info.hasFontOptions then
         local fontOptions = GetFontOptions(info.frame)
         for _, t in ipairs(fontOptions) do
           t.order = elementOrder + i
-          options.args[info.frame..i] = t
+          frameOptions[info.frame..i] = t
           i = i + 1
         end
         i = i + 1
@@ -522,7 +511,7 @@ function obj:Initialize()
         local xyOptions = GetXYOffsetOptions(info.frame)
         for _, t in ipairs(xyOptions) do
           t.order = elementOrder + i
-          options.args[info.frame..i] = t
+          frameOptions[info.frame..i] = t
           i = i + 1
         end
         i = i + 1

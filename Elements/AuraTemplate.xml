@@ -1,0 +1,51 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Button name='OofAuraTemplate' inherits='SecureActionButtonTemplate' virtual='true' framelevel="4">
+		<Size x='26' y='26'/>
+		<Attributes>
+			<Attribute name='type' value='cancelaura'/>
+		</Attributes>
+		<Scripts>
+			<OnLoad>
+				Oof:GetModule('Elements_BuffsDebuffs'):InitIcon(self)
+				self:RegisterForClicks('RightButtonUp')
+			</OnLoad>
+			<OnEnter>
+				GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
+				if(self:GetAttribute('index')) then
+					GameTooltip:SetUnitAura(SecureButton_GetUnit(self:GetParent()), self:GetID(), self:GetParent():GetAttribute("filter"))
+				elseif(self:GetAttribute'target-slot') then
+					GameTooltip:SetInventoryItem('player', self:GetID())
+				end
+			</OnEnter>
+			<OnLeave function='GameTooltip_Hide'/>
+		</Scripts>
+	</Button>
+
+	<Button name='OofAuraTemplate14' inherits='OofAuraTemplate' virtual='true'><Size x='14' y='14'/></Button>
+	<Button name='OofAuraTemplate16' inherits='OofAuraTemplate' virtual='true'><Size x='16' y='16'/></Button>
+	<Button name='OofAuraTemplate18' inherits='OofAuraTemplate' virtual='true'><Size x='18' y='18'/></Button>
+	<Button name='OofAuraTemplate20' inherits='OofAuraTemplate' virtual='true'><Size x='20' y='20'/></Button>
+	<Button name='OofAuraTemplate22' inherits='OofAuraTemplate' virtual='true'><Size x='22' y='22'/></Button>
+	<Button name='OofAuraTemplate24' inherits='OofAuraTemplate' virtual='true'><Size x='24' y='24'/></Button>
+	<Button name='OofAuraTemplate26' inherits='OofAuraTemplate' virtual='true'><Size x='26' y='26'/></Button>
+	<Button name='OofAuraTemplate28' inherits='OofAuraTemplate' virtual='true'><Size x='28' y='28'/></Button>
+	<Button name='OofAuraTemplate30' inherits='OofAuraTemplate' virtual='true'><Size x='30' y='30'/></Button>
+	<Button name='OofAuraTemplate32' inherits='OofAuraTemplate' virtual='true'><Size x='32' y='32'/></Button>
+	<Button name='OofAuraTemplate34' inherits='OofAuraTemplate' virtual='true'><Size x='34' y='34'/></Button>
+	<Button name='OofAuraTemplate36' inherits='OofAuraTemplate' virtual='true'><Size x='36' y='36'/></Button>
+	<Button name='OofAuraTemplate38' inherits='OofAuraTemplate' virtual='true'><Size x='38' y='38'/></Button>
+	<Button name='OofAuraTemplate40' inherits='OofAuraTemplate' virtual='true'><Size x='40' y='40'/></Button>
+	<Button name='OofAuraTemplate42' inherits='OofAuraTemplate' virtual='true'><Size x='42' y='42'/></Button>
+	<Button name='OofAuraTemplate44' inherits='OofAuraTemplate' virtual='true'><Size x='44' y='44'/></Button>
+	<Button name='OofAuraTemplate46' inherits='OofAuraTemplate' virtual='true'><Size x='46' y='46'/></Button>
+	<Button name='OofAuraTemplate48' inherits='OofAuraTemplate' virtual='true'><Size x='48' y='48'/></Button>
+	<Button name='OofAuraTemplate50' inherits='OofAuraTemplate' virtual='true'><Size x='50' y='50'/></Button>
+	<Button name='OofAuraTemplate52' inherits='OofAuraTemplate' virtual='true'><Size x='52' y='52'/></Button>
+	<Button name='OofAuraTemplate54' inherits='OofAuraTemplate' virtual='true'><Size x='54' y='54'/></Button>
+	<Button name='OofAuraTemplate56' inherits='OofAuraTemplate' virtual='true'><Size x='56' y='56'/></Button>
+	<Button name='OofAuraTemplate58' inherits='OofAuraTemplate' virtual='true'><Size x='58' y='58'/></Button>
+  <Button name='OofAuraTemplate60' inherits='OofAuraTemplate' virtual='true'><Size x='60' y='60'/></Button>
+
+
+	<Script file='BuffsDebuffs.lua'/>
+</Ui>

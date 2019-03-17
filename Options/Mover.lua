@@ -99,9 +99,10 @@ function obj:Initialize()
           xOffs,
           yOffs
         )
+        local scale = container.frame:GetScale()
         xOffsFrame:SetText(string.format("%i",xOffs))
         yOffsFrame:SetText(string.format("%i",yOffs))
-        container.setter(xOffs,yOffs)
+        container.setter(xOffs/scale,yOffs/scale)
       end)
     end
     container:SetScript("OnEnter", function(self)
@@ -117,22 +118,27 @@ function obj:Initialize()
   local movers = {}
 
   local function SetupMovers()
+
     for _, container in ipairs(containers) do
       local f = UIElements.CreateFrame("Panel", nil, moverContainer)
       f:SetClampedToScreen(true)
       f:SetText(container.name)
       f:SetFontSize(20)
       f.setter = container.setter
+      f.frame = container.frame
       table.insert(movers, f)
       local left,bottom,width,height = container.frame:GetRect()
+      local scale = container.frame:GetScale()
       container.values = {left,bottom}
       f:SetFrameStrata("FULLSCREEN")
       f:SetFrameLevel(99)
-      f:SetPoint("BOTTOMLEFT",UIParent,left,bottom)
-      f:SetSize(width, height)
+      f:SetPoint("BOTTOMLEFT",UIParent,left*scale,bottom*scale)
+      f:SetSize(width*scale, height*scale)
+
       f:SetAlpha(0.9)
       f:SetBackdropBorderColor(.5,.5,.5,1)
       AddNudgeButton(f)
+
       -- Draggable
       f:SetMovable(true)
       f:EnableMouse(true)
@@ -143,7 +149,7 @@ function obj:Initialize()
         self:StopMovingOrSizing();
         self.isMoving = false;
         local left,bottom,width,height = self:GetRect()
-        container.setter(left,bottom)
+        container.setter(left/scale,bottom/scale)
         self.nudgeContainer.xText:SetText(string.format("%i",left))
         self.nudgeContainer.yText:SetText(string.format("%i",bottom))
       end
