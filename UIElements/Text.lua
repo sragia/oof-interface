@@ -19,7 +19,10 @@ function obj:Initialize()
     end,
     SetFont = function(self,font,size,flags)
       self.text:SetFont(font,size,flags)
-    end
+    end,
+    SetTextColor = function(self,r,g,b,a)
+      self.text:SetTextColor(r,g,b,a)
+    end,
   }
 
   local function constructor(name,parent,options,frame)

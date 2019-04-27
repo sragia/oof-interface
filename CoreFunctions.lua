@@ -57,3 +57,38 @@ function ns.FormatTime(timeLeft)
   end
 
 end
+
+local textureFunctions = {
+  'SetTexture','SetPushedTexture','SetNormalTexture','SetHighlightTexture','SetHighlight'
+}
+
+function ns.StripTextures(frame)
+  for _, func in ipairs(textureFunctions) do
+    if frame[func] then frame[func](frame,nil) end
+  end
+end
+
+local prefix = 'Oof'
+function ns.ReplaceFunctions(frame,funcs)
+  for _, funcName in pairs(funcs) do
+    local customName = prefix .. funcName
+    if not frame[customName] then
+      frame[customName] = frame[funcName]
+      frame[funcName] = function() end
+    end
+  end
+  return prefix
+end
+
+
+function ns.InsetFrame(frame,parent,padding)
+  frame:ClearAllPoints()
+  frame:SetPoint("TOPLEFT",parent,padding, -padding)
+  frame:SetPoint("BOTTOMRIGHT",parent,-padding, padding)
+end
+
+function ns.InitTexture(frame)
+  local tex = frame:CreateTexture(nil,'OVERLAY')
+  tex:SetAllPoints()
+  return tex
+end

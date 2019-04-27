@@ -9,8 +9,25 @@ ns.skins = {
     table.insert(registeredSkins, { displayName = displayName, key = key })
   end,
   SkinClose = function(frame)
-    UI.defaultFunc.ApplyBackdrop(frame)
+    frame = UI.UpgradeExistingFrame('Button',frame,frame:GetParent())
+    frame:ApplyBackdrop()
+    ns.StripTextures(frame)
+
+    local tex = ns.InitTexture(frame)
+    tex:SetTexture(ns.GetTexture('close'))
+
+    frame:ClearAllPoints()
+    frame:SetPoint("TOPRIGHT", -1, -1)
+    frame:SetSize(20,20)
+    ns.InsetFrame(tex, frame, 2)
+
   end,
+  SkinPanelText = function(text)
+    text:ClearAllPoints()
+    text:SetPoint("TOPLEFT", 60, 10)
+    local font, size, flag = text:GetFont()
+    text:SetFont(font, 36, flag)
+  end
 }
 
 function obj:Initialize()

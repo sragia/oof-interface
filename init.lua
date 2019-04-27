@@ -121,17 +121,23 @@ local defaults = {
                 x = 0,
                 y = 0,
             },
-            hideSideButtons = false,
+            hideChatChannelButton = false,
+            hideChatMenuButton = false,
             hideSocialButton = false,
             tabPos = 'TOP',
             editPos = 'BOTTOM',
             font = 'CharlesWright',
             flag = 'NONE',
+            tabFontFlag = 'NONE',
+            tabFontSize = 14,
+            tabFont = 'CharlesWright',
+            tabFontColor = {1,1,1,1}
         },
         media = {
             fonts = {
                 defaultFont = 'CharlesWright',
-                replaceBlizz = true
+                replaceBlizz = true,
+                modifier = 1,
             }
         },
         objectiveTracker = {
@@ -199,15 +205,13 @@ local defaults = {
 
 
 local f = CreateFrame("Frame")
-f:RegisterEvent("ADDON_LOADED")
+f:RegisterEvent("VARIABLES_LOADED")
 f:SetScript("OnEvent", function(self,event,addonName)
-    if addonName == addon then
-        ns.DB = LibStub("AceDB-3.0"):New("OOF_DB", defaults)
-        OOF_DBs = ns.DB
-        InitializeFiles()
-        self:UnregisterEvent("ADDON_LOADED")
-        SAVE_VARS = ns.DB.profile.CUSTOMSAVE
-    end
+    ns.DB = LibStub("AceDB-3.0"):New("OOF_DB", defaults)
+    OOF_DBs = ns.DB
+    InitializeFiles()
+    self:UnregisterEvent("ADDON_LOADED")
+    SAVE_VARS = ns.DB.profile.CUSTOMSAVE
 end)
 
 ns.LSM = LibStub('LibSharedMedia-3.0');

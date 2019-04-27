@@ -534,7 +534,7 @@ function obj:Initialize()
     {
       ["flag"] = "",
       ["name"] = "SystemFont_LargeNamePlateFixed",
-      ["size"] = 31330.236328125,
+      ["size"] = 20,
     }, -- [6]
     {
       ["flag"] = "",
@@ -619,7 +619,7 @@ function obj:Initialize()
     {
       ["flag"] = "",
       ["name"] = "SystemFont_NamePlateFixed",
-      ["size"] = 21931.166015625,
+      ["size"] = 14,
     }, -- [23]
     {
       ["flag"] = "OUTLINE, THICKOUTLINE",
@@ -723,7 +723,7 @@ function obj:Initialize()
     if db.replaceBlizz then
       local defaultFont = ns.LSM:Fetch('font',db.defaultFont)
       for _, font in ipairs(blizzardFonts) do
-        _G[font.name]:SetFont(defaultFont, font.size, font.flag)
+        _G[font.name]:SetFont(defaultFont, font.size*db.modifier, font.flag)
       end
 
     end
@@ -768,108 +768,20 @@ function obj:Initialize()
         obj:Refresh()
       end
     },
+    modifier = {
+      type = 'range',
+      order = 30,
+      min = 0,
+      max = 2,
+      step = 0.05,
+      name = L['Modifier'],
+      get = function() return db.modifier end,
+      set = function(self,value)
+        db.modifier = value
+        obj:Refresh()
+      end,
+    }
   }
   ns.switchBoard.AddToOptionsTable('media', 'fonts', options)
 
 end
-
-
--- local f = {
---   'GameFontNormalLeft',
---   'GameFontNormalLeftBottom',
---   'GameFontNormalLeftGreen',
---   'GameFontNormalLeftYellow',
---   'GameFontNormalLeftOrange',
---   'GameFontNormalLeftLightGreen',
---   'GameFontNormalLeftGrey',
---   'GameFontNormalLeftRed',
---   'GameFontDisableMed3',
---   'GameFontHighlightRight',
---   'GameFontHighlightLarge2',
---   'GameFontDisableLeft',
---   'GameFontGreen',
---   'GameFontWhiteSmall',
---   'GameFontNormalSmallLeft',
---   'GameFontHighlightSmallLeftTop',
---   'GameFontHighlightSmallRight',
---   'GameFontHighlightExtraSmall',
---   'GameFontHighlightExtraSmallLeft',
---   'GameFontHighlightExtraSmallLeftTop',
---   'GameFontNormalGraySmall',
---   'GameFontGreenSmall',
---   'GameFontRedSmall',
---   'GameFontHighlightSmallOutline',
---   'GameFontNormalLargeLeft',
---   'GameFontNormalLargeLeftTop',
---   'GameFontGreenLarge',
---   'GameFontNormalHugeBlack',
---   'BossEmoteNormalHuge',
---   'NumberFontNormal',
---   'NumberFontNormalRight',
---   'NumberFontNormalRightRed',
---   'NumberFontNormalRightYellow',
---   'NumberFontNormalRightGray',
---   'NumberFontNormalYellow',
---   'NumberFontNormalSmall',
---   'NumberFontNormalSmallGray',
---   'NumberFontNormalLarge',
---   'NumberFontNormalLargeRight',
---   'NumberFontNormalLargeRightRed',
---   'NumberFontNormalLargeRightYellow',
---   'NumberFontNormalLargeRightGray',
---   'NumberFontNormalLargeYellow',
---   'NumberFontNormalHuge',
---   'QuestTitleFont',
---   'QuestTitleFontBlackShadow',
---   'QuestFont',
---   'QuestFontLeft',
---   'QuestFontNormalSmall',
---   'QuestDifficulty_Impossible',
---   'QuestDifficulty_VeryDifficult',
---   'QuestDifficulty_Difficult',
---   'QuestDifficulty_Standard',
---   'QuestDifficulty_Trivial',
---   'QuestDifficulty_Header',
---   'ItemTextFontNormal',
---   'MailTextFontNormal',
---   'SubSpellFont',
---   'DialogButtonNormalText',
---   'DialogButtonHighlightText',
---   'ZoneTextFont',
---   'SubZoneTextFont',
---   'PVPInfoTextFont',
---   'ErrorFont',
---   'TextStatusBarText',
---   'GameNormalNumberFont',
---   'WhiteNormalNumberFont',
---   'TextStatusBarTextLarge',
---   'CombatLogFont',
---   'WorldMapTextFont',
---   'InvoiceTextFontNormal',
---   'InvoiceTextFontSmall',
---   'CombatTextFont',
---   'CombatTextFontOutline',
---   'MovieSubtitleFont',
---   'AchievementPointsFont',
---   'AchievementPointsFontSmall',
---   'AchievementDescriptionFont',
---   'AchievementCriteriaFont',
---   'AchievementDateFont',
---   'VehicleMenuBarStatusBarText',
---   'FocusFontSmall',
---   'ObjectiveFont',
---   'ArtifactAppearanceSetNormalFont',
---   'ArtifactAppearanceSetHighlightFont',
---   'CommentatorTeamScoreFont',
---   'CommentatorDampeningFont',
---   'CommentatorTeamNameFont',
---   'CommentatorCCFont',
---   'CommentatorDeadFontSmall',
---   'CommentatorDeadFontMedium',
---   'CommentatorDeadFontDefault',
---   'CommentatorDeadFontLarge',
---   'CommentatorVictoryFanfare',
---   'CommentatorVictoryFanfareTeam',
---   'GameFontNormalSmall',
-
--- }

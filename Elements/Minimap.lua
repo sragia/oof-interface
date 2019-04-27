@@ -315,9 +315,30 @@ function obj:Initialize()
       frame = 'OofMinimapZoneText',
       init = function(self)
         local f = UIElements.CreateFrame("Text", self.frame, M)
+        f:RegisterEvent("PLAYER_ENTERING_WORLD");
+        f:RegisterEvent("ZONE_CHANGED_NEW_AREA");
+        f:RegisterEvent("ZONE_CHANGED");
+        f:RegisterEvent("ZONE_CHANGED_INDOORS");
+        f:SetScript("OnEvent",function(self,event)
+          local zone = GetMinimapZoneText()
+          local pvpType, isSubZonePvP, factionName = GetZonePVPInfo();
+          if ( pvpType == "sanctuary" ) then
+            self:SetTextColor(0.41, 0.8, 0.94);
+          elseif ( pvpType == "arena" ) then
+            self:SetTextColor(1.0, 0.1, 0.1);
+          elseif ( pvpType == "friendly" ) then
+            self:SetTextColor(0.1, 1.0, 0.1);
+          elseif ( pvpType == "hostile" ) then
+            self:SetTextColor(1.0, 0.1, 0.1);
+          elseif ( pvpType == "contested" ) then
+            self:SetTextColor(1.0, 0.7, 0.0);
+          else
+            self:SetTextColor(1,1,1,1);
+          end
+          self:SetText(zone)
+        end)
         table.insert(onHoverFunctions, function()
           f:Show()
-          f:SetText('Zone')
         end)
         table.insert(onLeaveFunction, function()
           f:Hide()

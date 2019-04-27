@@ -67,8 +67,24 @@ function obj:Initialize()
     end
   end
 
+  local function UpgradeExistingFrame(type,frame,parent,options)
+    if elementTypes[type] then
+      local element = elementTypes[type].constructor(nil, parent, options, frame)
+      if elementTypes[type].funcs then
+        for _, funcName in ipairs(elementTypes[type].funcs) do
+          if UIElements.defaultFunc[funcName] then
+            element[funcName] = UIElements.defaultFunc[funcName]
+          end
+        end
+      end
+      return element
+    end
+    return frame
+  end
+
   UIElements.RegisterFrameType = RegisterFrameType
   UIElements.CreateFrame = CreateFrame
+  UIElements.UpgradeExistingFrame = UpgradeExistingFrame
   UIElements.defaultFunc = {
     ApplyBackdrop = ApplyBackdrop
   }

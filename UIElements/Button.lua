@@ -45,7 +45,7 @@ function obj:Initialize()
       btn:SetBackdropBorderColor(unpack(options.borderColor))
     end
     -- Text
-    local buttonText = btn:CreateFontString(nil, "OVERLAY")
+    local buttonText = btn.text or btn:CreateFontString(nil, "OVERLAY")
     buttonText:SetFont(ns.defaults.font,11)
     local just = options and options.justification or "LEFT"
     local xOffset = 3
@@ -58,7 +58,7 @@ function obj:Initialize()
     btn.text = buttonText
     -- Texture
     if options and options.texture then
-      local tex = btn:CreateTexture(nil,"OVERLAY")
+      local tex = btn.texture or btn:CreateTexture(nil,"OVERLAY")
       btn.texture = tex
       tex:SetTexture(options.texture)
       tex:SetAllPoints()
