@@ -29,7 +29,18 @@ local textureMap = {
   muted = 'Icons/mic-muted.tga',
   invoice = 'Icons/invoice.tga',
   copy = 'Icons/copy.tga',
-  EJ_Portrait = 'Skins/EJ_Portrait.tga'
+  EJ_Portrait = 'Skins/EJ_Portrait.tga',
+  LFG_Portrait = 'Skins/LFG_Portrait.tga',
+  scroll_up = 'Icons/scroll-up.tga',
+  scroll_down = 'Icons/scroll-down.tga',
+  scroll_up_disabled = 'Icons/scroll-up-disabled.tga',
+  scroll_down_disabled = 'Icons/scroll-down-disabled.tga',
+  btn_highlight = 'Icons/button-highlight.tga',
+  scroll_thumb = 'Icons/scroll-knob.tga',
+  expand = 'Icons/expand.tga',
+  collapse = 'Icons/collapse.tga',
+  dropdown_down = 'Icons/dropdown-down.tga',
+  dropdown_down_disabled = 'Icons/dropdown-down-disabled.tga',
 }
 
 function ns.GetTexture(texture)

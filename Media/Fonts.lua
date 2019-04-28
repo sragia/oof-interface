@@ -264,7 +264,7 @@ function obj:Initialize()
     {
       ["flag"] = "OUTLINE",
       ["name"] = "QuestDifficulty_Difficult",
-      ["size"] = 10,
+      ["size"] = 11,
     }, -- [52]
     {
       ["flag"] = "OUTLINE",
@@ -279,7 +279,7 @@ function obj:Initialize()
     {
       ["flag"] = "OUTLINE",
       ["name"] = "QuestDifficulty_Header",
-      ["size"] = 10,
+      ["size"] = 11,
     }, -- [55]
     {
       ["flag"] = "",

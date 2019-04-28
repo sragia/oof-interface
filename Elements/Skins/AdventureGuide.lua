@@ -3,7 +3,6 @@ local L = ns.L
 local key = 'AdventureGuide'
 local name = 'Adventure Guide'
 local obj = ns.CreateNewModule("Skins_"..key)
-local registeredSkins = {}
 
 ns.skins.RegisterSkin(key, name)
 
@@ -84,18 +83,13 @@ function obj:Initialize()
     SF.ApplyBackdrop(bg)
     bg:SetAllPoints(mainFrame)
     bg:SetFrameStrata("LOW")
-    -- SF.ApplyBackdrop(mainFrame)
-    -- SF.ApplyBackdrop(mainFrame.inset.NineSlice)
+
     ns.skins.SkinClose(mainFrame.CloseButton)
     mainFrame.inset:SetFrameLevel(2)
     mainFrame.inset.NineSlice:SetFrameLevel(2)
     mainFrame.encounter:SetFrameLevel(2)
     -- Portrait
-    local portrait = mainFrame.portrait
-    ns.StripTextures(portrait)
-    portrait:SetTexture(ns.GetTexture('EJ_Portrait'))
-    portrait:ClearAllPoints()
-    portrait:SetPoint("TOPLEFT", 1, 0)
+    mainFrame.portrait:SetAlpha(0)
     -- Title Bar
     local titleText = mainFrame.TitleText
     ns.skins.SkinPanelText(titleText)
@@ -125,6 +119,9 @@ function obj:Initialize()
     HideRegions(navBar.overlay)
     HideRegions(navBar, 1)
     SF.ApplyBackdrop(navBar)
+    navBar:SetWidth(555)
+    navBar:ClearAllPoints()
+    navBar:SetPoint("TOPLEFT", 5, -22)
     navBar.homeButton:ClearAllPoints()
     navBar.homeButton:SetPoint("LEFT", 2, 0)
 
