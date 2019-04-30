@@ -187,6 +187,140 @@ function obj:Initialize()
     }
     StripTextures(lfrTexs, _G['RaidFinderFrameBottomInset'])
 
+    -- LFG List
+    local lfgList = _G['LFGListFrame']
+    ns.skins.SkinButton(lfgList.CategorySelection.FindGroupButton)
+    ns.skins.SkinButton(lfgList.CategorySelection.StartGroupButton)
+    local lfgListTexs = {
+      CategorySelection = {
+        Inset = {
+          'Bg',
+          'CustomBG',
+          NineSlice = {
+            'BottomEdge',
+            'BottomLeftCorner',
+            'BottomRightCorner',
+            'LeftEdge',
+            'RightEdge',
+            'TopEdge',
+            'TopLeftCorner',
+            'TopRightCorner'
+          },
+        }
+      },
+      EntryCreation = {
+        Inset = {
+          'Bg',
+          'CustomBG',
+          NineSlice = {
+            'BottomEdge',
+            'BottomLeftCorner',
+            'BottomRightCorner',
+            'LeftEdge',
+            'RightEdge',
+            'TopEdge',
+            'TopLeftCorner',
+            'TopRightCorner'
+          },
+        }
+      },
+      SearchPanel = {
+        ResultsInset = {
+          'Bg',
+          NineSlice = {
+            'BottomEdge',
+            'BottomLeftCorner',
+            'BottomRightCorner',
+            'LeftEdge',
+            'RightEdge',
+            'TopEdge',
+            'TopLeftCorner',
+            'TopRightCorner'
+          },
+        }
+      }
+    }
+    StripTextures(lfgListTexs, lfgList)
+
+    -- Create Group Frame
+    local entryCreation = lfgList.EntryCreation
+    ns.skins.SkinDropdown(entryCreation.ActivityDropDown)
+    ns.skins.SkinDropdown(entryCreation.CategoryDropDown)
+    ns.skins.SkinDropdown(entryCreation.GroupDropDown)
+
+    ns.skins.SkinCheckbox(entryCreation.ItemLevel.CheckButton)
+    ns.skins.SkinCheckbox(entryCreation.VoiceChat.CheckButton)
+    ns.skins.SkinCheckbox(entryCreation.PrivateGroup.CheckButton)
+
+    ns.skins.SkinInput(entryCreation.Name)
+    ns.skins.SkinInput(entryCreation.ItemLevel.EditBox)
+    ns.skins.SkinInput(entryCreation.VoiceChat.EditBox)
+
+    ns.skins.SkinDescription(entryCreation.Description)
+
+
+    local p, rt, rp, x, y = entryCreation.Description:GetPoint()
+
+    entryCreation.Description:ClearAllPoints()
+    entryCreation.Description:SetPoint(p, rt, rp, x - 5, -185)
+    entryCreation.Description:SetWidth(290)
+
+    p, rt, rp, x, y = entryCreation.Name:GetPoint()
+
+    entryCreation.Name:ClearAllPoints()
+    entryCreation.Name:SetPoint(p, rt, rp, x - 5, y)
+    entryCreation.Name:SetWidth(290)
+
+
+    ns.skins.SkinButton(entryCreation.CancelButton)
+    ns.skins.SkinButton(entryCreation.ListGroupButton)
+
+
+    -- Search List
+    local searchPanel = lfgList.SearchPanel
+
+    ns.skins.SkinSearch(searchPanel.SearchBox)
+
+    searchPanel.SearchBox:SetHeight(22)
+
+
+    ns.skins.SkinButton(searchPanel.SignUpButton)
+    ns.skins.SkinButton(searchPanel.BackButton)
+
+    ns.skins.SkinMenuButton(searchPanel.FilterButton)
+    searchPanel.FilterButton.Icon:SetTexture(ns.GetTexture('arrow_right'))
+
+    ns.skins.SkinButton(searchPanel.RefreshButton)
+    searchPanel.RefreshButton.Icon:SetTexture(ns.GetTexture('refresh'))
+    ns.ReplaceFunctions(searchPanel.RefreshButton.Icon,{"SetTexture"})
+
+    ns.skins.SkinScrollBar(searchPanel.ScrollFrame)
+
+    -- Tabs
+    ns.skins.SkinTab(mainFrame.tab1)
+    ns.skins.SkinTab(mainFrame.tab2)
+    ns.skins.SkinTab(mainFrame.tab3)
+
+  end
+
+  local function SkinHonorFrame()
+     -- PvP Frame
+     local honorFrame = _G['HonorFrame']
+     ns.skins.SkinButton(honorFrame.QueueButton)
+     ns.skins.SkinCheckbox(honorFrame.TankIcon.checkButton)
+     ns.skins.SkinCheckbox(honorFrame.HealerIcon.checkButton)
+     ns.skins.SkinCheckbox(honorFrame.DPSIcon.checkButton)
+
+     local dropdown = _G['HonorFrameTypeDropDown']
+     ns.skins.SkinDropdown(dropdown)
+
+     local conquestFrame = _G['ConquestFrame']
+     ns.skins.SkinButton(conquestFrame.JoinButton)
+     ns.skins.SkinCheckbox(conquestFrame.TankIcon.checkButton)
+     ns.skins.SkinCheckbox(conquestFrame.HealerIcon.checkButton)
+     ns.skins.SkinCheckbox(conquestFrame.DPSIcon.checkButton)
+
+
   end
 
   C_Timer.After(0.5,SkinFrame)
@@ -195,6 +329,9 @@ function obj:Initialize()
   frame:RegisterEvent("ADDON_LOADED")
   frame:SetScript("OnEvent", function(self, event, addonName)
     print(addonName)
+    if addonName == 'Blizzard_PVPUI' then
+      SkinHonorFrame()
+    end
     -- if addonName == 'Blizzard_EncounterJournal' then
     --   SkinFrame()
     --   frame:UnregisterEvent("ADDON_LOADED")

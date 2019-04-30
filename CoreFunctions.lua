@@ -92,3 +92,10 @@ function ns.InitTexture(frame)
   tex:SetAllPoints()
   return tex
 end
+
+function ns.MergeTables(target, additional)
+  for k,v in pairs(additional) do
+    target[k] = v
+  end
+  return target
+end

@@ -41,6 +41,8 @@ local textureMap = {
   collapse = 'Icons/collapse.tga',
   dropdown_down = 'Icons/dropdown-down.tga',
   dropdown_down_disabled = 'Icons/dropdown-down-disabled.tga',
+  arrow_right = 'Icons/arrow-right.tga',
+  refresh = 'Icons/refresh.tga'
 }
 
 function ns.GetTexture(texture)

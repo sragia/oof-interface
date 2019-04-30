@@ -47,6 +47,8 @@ function obj:Initialize()
     -- Text
     local buttonText = btn.text or btn:CreateFontString(nil, "OVERLAY")
     buttonText:SetFont(ns.defaults.font,11)
+    buttonText:SetShadowColor(0,0,0,1)
+    buttonText:SetShadowOffset(0,-1)
     local just = options and options.justification or "LEFT"
     local xOffset = 3
     if just == "CENTER" then
@@ -77,6 +79,27 @@ function obj:Initialize()
       btn[name] = func
     end
 
+    function btn.SetStatus(self, status)
+      if status then
+        -- enabled
+        self:SetTextColor(1,1,1,1)
+        self.currentColor = self.defaultColor
+      else
+        -- disabled
+        self:SetTextColor(0.9, 0.9, 0.9, 1)
+        self.currentColor = {0.08, 0.08, 0.08, 1}
+      end
+      self:SetBackdropColor(unpack(self.currentColor))
+    end
+
+    btn:SetStatus(btn:IsEnabled())
+
+    btn:SetScript("OnEnable", function(self)
+      self:SetStatus(true)
+    end)
+    btn:SetScript("OnDisable", function(self)
+      self:SetStatus(false)
+    end)
 
     return btn
   end

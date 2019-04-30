@@ -6,7 +6,7 @@ local UI = ns.UIElements
 local SF = UI.defaultFunc
 
 local buttonTexs = {
-  'Left', 'Middle', 'Right'
+  'Left', 'Middle', 'Right','BottomLeft','MiddleMiddle','MiddleRight','MiddleLeft','BottomMiddle','BottomRight','TopLeft','TopMiddle','TopRight',
 }
 
 local scrollbarTex = {
@@ -22,13 +22,26 @@ local scrollbarTex = {
     Normal = 'scroll_up',
     Pushed = 'scroll_up'
   },
-  ThumbTexture = 'scroll_thumb'
+  ThumbTexture = 'scroll_thumb',
+  DownButton = {
+    Disabled = 'scroll_down_disabled',
+    Highlight = 'btn_highlight',
+    Normal = 'scroll_down',
+    Pushed = 'scroll_down'
+  },
+  UpButton = {
+    Disabled = 'scroll_up_disabled',
+    Highlight = 'btn_highlight',
+    Normal = 'scroll_up',
+    Pushed = 'scroll_up'
+  },
+  thumbTexture = 'scroll_thumb',
 }
 local function SkinScrollBarButtons(t,frame)
   for k,v in pairs(t) do
-    if (type(v) == 'table') then
+    if (frame[k] and type(v) == 'table') then
       SkinScrollBarButtons(v,frame[k])
-    else
+    elseif frame[k] then
       frame[k]:SetTexture(ns.GetTexture(v))
       -- (ULx,ULy,LLx,LLy,URx,URy,LRx,LRy)
       frame[k]:SetTexCoord(.15,.20,.15,.80,.85,.20,.85,.80)
@@ -43,9 +56,9 @@ local dropdownTexLoc = {
 
 local function StripDropdownTex(t,frame)
   for k,v in pairs(t) do
-    if (type(v) == 'table') then
+    if (frame[k] and type(v) == 'table') then
       StripDropdownTex(v,frame[k])
-    else
+    elseif frame[v] then
       ns.StripTextures(frame[v])
     end
   end
@@ -67,6 +80,32 @@ local function SkinButton(t, frame)
   end
 end
 
+local tabTexturesLoc = {
+  'LeftDisabled','Left','MiddleDisabled','Middle','RightDisabled','Right','HighlightTexture'
+}
+
+local inputTexLoc = {
+  'Left', 'Middle', 'Right'
+}
+
+local descriptionTexLoc = {
+  'BottomLeftTex',
+  'BottomTex',
+  'BottomRightTex',
+  'LeftTex',
+  'MiddleTex',
+  'RightTex',
+  'TopLeftTex',
+  'TopTex',
+  'TopRightTex',
+}
+
+local searchTexLoc = {
+    'Left',
+    'Middle',
+    'Right'
+
+}
 
 ns.skins = {
   RegisterSkin = function(key, displayName)
@@ -89,26 +128,44 @@ ns.skins = {
   SkinPanelText = function(text)
     text:ClearAllPoints()
     text:SetPoint("TOPLEFT", 10, 10)
+    text:SetPoint("TOPRIGHT",-30, 10)
+    text:SetJustifyH("LEFT")
     local font, size, flag = text:GetFont()
     text:SetFont(font, 32, flag)
   end,
-  SkinButton = function(button)
+  SkinButton = function(button,options)
     ns.StripTextures(button)
-    button = UI.UpgradeExistingFrame('Button',button,button:GetParent(),{justification = 'CENTER'})
+    local opt = {justification = "CENTER"}
+    ns.MergeTables(opt, options or {})
+    button = UI.UpgradeExistingFrame('Button',button,button:GetParent(),opt)
     for _, tex in ipairs(buttonTexs) do
       if button[tex] then
         ns.StripTextures(button[tex])
         ns.ReplaceFunctions(button[tex],{'SetTexture'})
       end
     end
-    button.Text:Hide()
+    if button.Text then
+      button.Text:Hide()
+      button:SetText(button.Text:GetText())
+    elseif button:GetFontString() then
+      button:GetFontString():Hide()
+      button:SetText(button:GetFontString():GetText())
+    end
     button:ApplyBackdrop()
   end,
   SkinScrollBar = function(scrollbar)
-    SkinScrollBarButtons(scrollbarTex, scrollbar.ScrollBar)
-    UI.defaultFunc.ApplyBackdrop(scrollbar.ScrollBar)
+    local bar = scrollbar.ScrollBar or scrollbar.scrollBar
+    SkinScrollBarButtons(scrollbarTex, bar)
+    UI.defaultFunc.ApplyBackdrop(bar)
     for _, tex in ipairs({scrollbar:GetRegions()}) do
       ns.StripTextures(tex)
+    end
+    for _, texLoc in ipairs({
+      'Bottom','Middle','Top'
+    }) do
+      if bar[texLoc] then
+        ns.StripTextures(bar[texLoc])
+      end
     end
   end,
   SkinCheckbox = function(checkbox)
@@ -132,11 +189,31 @@ ns.skins = {
       checkbox.skinned = true
     end
   end,
+  SkinSearch = function(searchBox)
+    UI.defaultFunc.ApplyBackdrop(searchBox)
+
+    searchBox:SetTextInsets(22,22,0,0)
+    -- Search icon
+    local searchIcon = searchBox.searchIcon
+    searchIcon:ClearAllPoints()
+    searchIcon:SetPoint("LEFT",5,-2)
+    searchIcon:SetSize(16,16)
+    -- Search Instructions
+    local searchInstructions = searchBox.Instructions
+    searchInstructions:ClearAllPoints()
+    searchInstructions:SetPoint("TOPLEFT", 22, 0)
+    searchInstructions:SetPoint("BOTTOMRIGHT",-22, 0)
+
+    for _, tex in ipairs(searchTexLoc) do
+      if searchBox[tex] then
+        ns.StripTextures(searchBox[tex])
+      end
+    end
+  end,
   SkinDropdown = function(dropdown)
     if not (dropdown.skinned) then
 
       StripDropdownTex(dropdownTexLoc, dropdown)
-      -- UI.defaultFunc.ApplyBackdrop(dropdown)
 
       -- Backdrop
       local bd = CreateFrame("Frame",nil, dropdown)
@@ -148,10 +225,19 @@ ns.skins = {
 
       dropdown:SetFrameLevel(bd:GetFrameLevel() + 1)
       bd:SetFrameLevel(dropdown:GetFrameLevel() - 1)
+
       -- Text
       local text = dropdown.Text
-      text:ClearAllPoints()
-      text:SetPoint("RIGHT",-39, 1)
+      text.OofSetPoint = text.SetPoint
+      text.SetPoint = function(self, point, relativeTo, relativePoint, x, y)
+        text:ClearAllPoints()
+        if point:find("LEFT") then
+          text:OofSetPoint(point,relativeTo,relativePoint,x - 10,0)
+        else
+          text:OofSetPoint("RIGHT",-39, 1)
+        end
+      end
+      text:SetPoint(text:GetPoint())
 
 
       -- Button
@@ -162,10 +248,63 @@ ns.skins = {
       btn:SetPoint("TOPRIGHT", -16, -3)
       btn:SetBackdrop(nil)
 
-
       dropdown.skinned = true
     end
   end,
+  SkinTab = function(tab)
+    ns.StripTextures(tab)
+    for _, texLoc in ipairs(tabTexturesLoc) do
+      ns.StripTextures(_G[tab:GetName() .. texLoc])
+    end
+    ns.skins.SkinButton(tab)
+    local point, relativeTo, relativePoint, x, y = tab:GetPoint()
+    tab:ClearAllPoints()
+    if point == "LEFT" then
+      -- n-th button
+      tab:SetPoint(point, relativeTo, relativePoint, 1, 0)
+    else
+      -- first
+      tab:SetPoint(point, relativeTo, relativePoint, x, y - 1)
+    end
+  end,
+  SkinInput = function(input)
+    for _, tex in ipairs(inputTexLoc) do
+      if input[tex] then
+        ns.StripTextures(input[tex])
+      end
+    end
+    input:SetTextInsets(5,5,0,0)
+    UI.defaultFunc.ApplyBackdrop(input)
+    input.Instructions:ClearAllPoints()
+    input.Instructions:SetPoint("TOPLEFT", 5, 0)
+    input.Instructions:SetPoint("BOTTOMRIGHT", -5, 0)
+  end,
+  SkinDescription = function(desc)
+    for _, tex in ipairs(descriptionTexLoc) do
+      if desc[tex] then
+        ns.StripTextures(desc[tex])
+      end
+    end
+
+    local bd = CreateFrame("Frame",nil, desc)
+    UI.defaultFunc.ApplyBackdrop(bd)
+    bd:SetAllPoints()
+    bd:SetFrameLevel(desc:GetFrameLevel() - 1)
+    desc.backdrop = bd
+
+    local input = desc.EditBox
+    input:SetTextInsets(5,5,5,5)
+    input.Instructions:ClearAllPoints()
+    input.Instructions:SetPoint("TOPLEFT", 5, -5)
+    input.Instructions:SetPoint("BOTTOMRIGHT", -5, 5)
+
+    ns.skins.SkinScrollBar(desc)
+
+  end,
+  SkinMenuButton = function(menuBtn)
+    ns.skins.SkinButton(menuBtn)
+
+  end
 }
 
 
@@ -182,6 +321,9 @@ function obj:Initialize()
   ns.UIElements.defaultFunc.ApplyBackdrop(dropdownListBackdrop)
   local dropdownList = _G['DropDownList1']
   ns.StripTextures(dropdownList)
+
+  ns.UIElements.defaultFunc.ApplyBackdrop(_G['DropDownList1MenuBackdrop'])
+
 
 
   -- OPTIONS CONFIG --

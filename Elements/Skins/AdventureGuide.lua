@@ -125,6 +125,11 @@ function obj:Initialize()
     navBar.homeButton:ClearAllPoints()
     navBar.homeButton:SetPoint("LEFT", 2, 0)
 
+
+    -- DropDown
+    local dropdown = _G['EncounterJournalInstanceSelectTierDropDown']
+    ns.skins.SkinDropdown(dropdown)
+
   end
 
   local frame = CreateFrame("Frame")
