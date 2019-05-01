@@ -96,10 +96,7 @@ function obj:Initialize()
 
 
     -- Background
-    local bg = CreateFrame('Frame', nil, mainFrame)
-    SF.ApplyBackdrop(bg)
-    bg:SetAllPoints(mainFrame)
-    bg:SetFrameStrata("LOW")
+    ns.skins.AddBackdrop(mainFrame)
 
     -- Close Btn
     ns.skins.SkinClose(mainFrame.CloseButton)

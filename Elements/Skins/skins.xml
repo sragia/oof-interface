@@ -1,7 +1,25 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
+<!-- Skinned -->
   <Script file="AdventureGuide.lua"/>
   <Script file="LFDFrame.lua"/>
   <Script file="GameMenu.lua"/>
   <Script file="SpellBook.lua"/>
+
+<!-- Unskinned -->
+  <Script file="Talents.lua"/>
+  <Script file="Achievements.lua"/>
+  <Script file="Map.lua"/>
+  <Script file="Communities.lua"/>
+  <Script file="Collections.lua"/>
+  <Script file="Shop.lua"/>
+  <Script file="Character.lua"/>
+  <Script file="Interface.lua"/>
+  <Script file="System.lua"/>
+  <Script file="Macros.lua"/>
+  <Script file="Keybindings.lua"/>
+  <Script file="Misc.lua"/>
+
+
+
 </Ui>

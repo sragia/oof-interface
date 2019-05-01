@@ -12,6 +12,35 @@ function obj:Initialize()
   local db = ns.DB.profile.skins[key]
   local skins = ns.skins
 
+  local texLoc = {
+    'TitleBg',
+    'TopTileStreaks',
+    'Bg',
+    NineSlice = {
+      'TopRightCorner',
+      'TopEdge',
+      'TopLeftCorner',
+      'RightEdge',
+      'BottomEdge',
+      'LeftEdge',
+      'BottomEdge',
+      'BottomRightCorner',
+      'BottomLeftCorner'
+    },
+    Inset = {
+      NineSlice = {
+        'TopRightCorner',
+        'TopEdge',
+        'TopLeftCorner',
+        'RightEdge',
+        'BottomEdge',
+        'LeftEdge',
+        'BottomEdge',
+        'BottomRightCorner',
+        'BottomLeftCorner'
+      }
+    },
+  }
 
   local function StripTextures(t, mainFrame)
     for k,v in pairs(t) do
@@ -24,12 +53,39 @@ function obj:Initialize()
   end
 
   local function SkinFrame()
-    local mainFrame = _G['EncounterJournal']
+    local mainFrame = _G['SpellBookFrame']
+
+    StripTextures(texLoc, mainFrame)
+
+    skins.AddBackdrop(mainFrame)
+    -- Portrait
+    mainFrame.portrait:SetAlpha(0)
+
+    skins.SkinPanelText(mainFrame.TitleText)
+
+    skins.SkinClose(mainFrame.CloseButton)
+
+    skins.SkinHelpButton(mainFrame.MainHelpButton)
+
+    local prevBtn = _G['SpellBookPrevPageButton']
+    local nextBtn = _G['SpellBookNextPageButton']
+    skins.SkinPrevNextButton(prevBtn,true)
+    skins.SkinPrevNextButton(nextBtn,false)
+
+    for i = 1, 5 do
+      local f = _G['SpellBookFrameTabButton' .. i]
+      if f then
+        skins.SkinTab(f)
+      else
+        break
+      end
+    end
+
 
   end
 
   if db then
-    SkinFrame()
+    C_Timer.After(0.2,SkinFrame)
 
   -- local frame = CreateFrame("Frame")
   -- frame:RegisterEvent("ADDON_LOADED")

@@ -59,7 +59,7 @@ function ns.FormatTime(timeLeft)
 end
 
 local textureFunctions = {
-  'SetTexture','SetPushedTexture','SetNormalTexture','SetHighlightTexture','SetHighlight'
+  'SetTexture','SetPushedTexture','SetNormalTexture','SetHighlightTexture','SetHighlight',"SetDisabledTexture"
 }
 
 function ns.StripTextures(frame)

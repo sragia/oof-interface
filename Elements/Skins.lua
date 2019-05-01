@@ -125,6 +125,13 @@ ns.skins = {
     ns.InsetFrame(tex, frame, 2)
 
   end,
+  AddBackdrop = function(frame)
+    local bg = CreateFrame('Frame', nil, frame)
+    UI.defaultFunc.ApplyBackdrop(bg)
+    bg:SetAllPoints(frame)
+    bg:SetFrameStrata("LOW")
+    frame.OofBackdrop = bg
+  end,
   SkinPanelText = function(text)
     text:ClearAllPoints()
     text:SetPoint("TOPLEFT", 10, 10)
@@ -299,11 +306,19 @@ ns.skins = {
     input.Instructions:SetPoint("BOTTOMRIGHT", -5, 5)
 
     ns.skins.SkinScrollBar(desc)
-
   end,
   SkinMenuButton = function(menuBtn)
     ns.skins.SkinButton(menuBtn)
-
+  end,
+  SkinHelpButton = function(helpBtn)
+    helpBtn:ClearAllPoints()
+    helpBtn:SetPoint("TOPRIGHT", -13, 25)
+  end,
+  SkinPrevNextButton = function(btn, isPrev)
+    local tex = isPrev and 'icon_left' or 'icon_right'
+    ns.skins.SkinButton(btn,{texture = ns.GetTexture(tex)})
+    btn.texture:SetVertexColor(1,1,1,0.9)
+    ns.InsetFrame(btn.texture, btn, 6)
   end
 }
 

@@ -1,7 +1,7 @@
 local addon, ns = ...
 local L = ns.L
-local key = 'AdventureGuide'
-local name = 'Adventure Guide'
+local key = 'achievements'
+local name = 'Achievements'
 local obj = ns.CreateNewModule("Skins_"..key)
 
 ns.skins.RegisterSkin(key, name)

@@ -79,10 +79,7 @@ function obj:Initialize()
     -- Strip Textures
     StripTextures(texLoc, mainFrame)
 
-    local bg = CreateFrame('Frame', nil, mainFrame)
-    SF.ApplyBackdrop(bg)
-    bg:SetAllPoints(mainFrame)
-    bg:SetFrameStrata("LOW")
+    ns.skins.AddBackdrop(mainFrame)
 
     ns.skins.SkinClose(mainFrame.CloseButton)
     mainFrame.inset:SetFrameLevel(2)
