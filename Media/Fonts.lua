@@ -728,7 +728,7 @@ function obj:Initialize()
 
     end
   end
-  C_Timer.After(0.3,function() obj:Refresh() end)
+  C_Timer.After(0.1,function() obj:Refresh() end)
 
 
   local options = {

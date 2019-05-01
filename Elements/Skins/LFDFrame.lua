@@ -322,22 +322,22 @@ function obj:Initialize()
 
 
   end
+  if db then
+    C_Timer.After(0.5,SkinFrame)
 
-  C_Timer.After(0.5,SkinFrame)
-
-  local frame = CreateFrame("Frame")
-  frame:RegisterEvent("ADDON_LOADED")
-  frame:SetScript("OnEvent", function(self, event, addonName)
-    print(addonName)
-    if addonName == 'Blizzard_PVPUI' then
-      SkinHonorFrame()
-    end
-    -- if addonName == 'Blizzard_EncounterJournal' then
-    --   SkinFrame()
-    --   frame:UnregisterEvent("ADDON_LOADED")
-    -- end
-  end)
-
+    local frame = CreateFrame("Frame")
+    frame:RegisterEvent("ADDON_LOADED")
+    frame:SetScript("OnEvent", function(self, event, addonName)
+      print(addonName)
+      if addonName == 'Blizzard_PVPUI' then
+        SkinHonorFrame()
+      end
+      -- if addonName == 'Blizzard_EncounterJournal' then
+      --   SkinFrame()
+      --   frame:UnregisterEvent("ADDON_LOADED")
+      -- end
+    end)
+  end
   function obj:Refresh()
     ns.ReloadPopup()
   end

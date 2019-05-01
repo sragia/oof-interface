@@ -87,7 +87,7 @@ function obj:Initialize()
       else
         -- disabled
         self:SetTextColor(0.9, 0.9, 0.9, 1)
-        self.currentColor = {0.08, 0.08, 0.08, 1}
+        self.currentColor = {0.1, 0.1, 0.1, 1}
       end
       self:SetBackdropColor(unpack(self.currentColor))
     end

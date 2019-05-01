@@ -113,6 +113,7 @@ local defaults = {
         skins = {
             AdventureGuide = true,
             groupfinder = true,
+            gamemenu = true,
         },
         chat = {
             container = {

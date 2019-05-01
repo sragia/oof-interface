@@ -2,4 +2,6 @@
 ..\FrameXML\UI.xsd">
   <Script file="AdventureGuide.lua"/>
   <Script file="LFDFrame.lua"/>
+  <Script file="GameMenu.lua"/>
+  <Script file="SpellBook.lua"/>
 </Ui>
