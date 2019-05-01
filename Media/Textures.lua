@@ -4,14 +4,14 @@ local obj = ns.CreateNewModule("Media_Fonts")
 local dir = [[Interface/Addons/Oof/Media/]]
 
 local statusBarTextures = {
-  "Textures/Oof_Blank",
-  "Textures/Oof_Darkened",
-  "Textures/Oof_Noisy",
-  "Textures/Oof_SlightGradient"
+  "Oof_Blank",
+  "Oof_Darkened",
+  "Oof_Noisy",
+  "Oof_SlightGradient"
 }
 function obj:Initialize()
   for _, tex in ipairs(statusBarTextures) do
-    ns.LSM:Register("statusbar",tex, dir .. tex)
+    ns.LSM:Register("statusbar",tex, dir .. 'Textures/' .. tex)
   end
 end
 

@@ -37,6 +37,20 @@ local scrollbarTex = {
   },
   thumbTexture = 'scroll_thumb',
 }
+local alternativeScrollBarTexLoc = {
+  scrollDown = {
+    Disabled = 'scroll_down_disabled',
+    Highlight = 'btn_highlight',
+    Normal = 'scroll_down',
+    Pushed = 'scroll_down'
+  },
+  scrollUp = {
+    Disabled = 'scroll_up_disabled',
+    Highlight = 'btn_highlight',
+    Normal = 'scroll_up',
+    Pushed = 'scroll_up'
+  },
+}
 local function SkinScrollBarButtons(t,frame)
   for k,v in pairs(t) do
     if (frame[k] and type(v) == 'table') then
@@ -126,7 +140,7 @@ ns.skins = {
 
   end,
   AddBackdrop = function(frame)
-    local bg = CreateFrame('Frame', nil, frame)
+    local bg = frame.OofBackdrop or CreateFrame('Frame', nil, frame)
     UI.defaultFunc.ApplyBackdrop(bg)
     bg:SetAllPoints(frame)
     bg:SetFrameStrata("LOW")
@@ -163,12 +177,13 @@ ns.skins = {
   SkinScrollBar = function(scrollbar)
     local bar = scrollbar.ScrollBar or scrollbar.scrollBar
     SkinScrollBarButtons(scrollbarTex, bar)
+    SkinScrollBarButtons(alternativeScrollBarTexLoc, scrollbar)
     UI.defaultFunc.ApplyBackdrop(bar)
     for _, tex in ipairs({scrollbar:GetRegions()}) do
       ns.StripTextures(tex)
     end
     for _, texLoc in ipairs({
-      'Bottom','Middle','Top'
+      'Bottom','Middle','Top','ScrollBarBottom','ScrollBarMiddle','ScrollBarTop'
     }) do
       if bar[texLoc] then
         ns.StripTextures(bar[texLoc])
@@ -319,7 +334,18 @@ ns.skins = {
     ns.skins.SkinButton(btn,{texture = ns.GetTexture(tex)})
     btn.texture:SetVertexColor(1,1,1,0.9)
     ns.InsetFrame(btn.texture, btn, 6)
-  end
+  end,
+  SkinStatusBar = function(statusbar)
+    for _, f in ipairs({statusbar:GetRegions()}) do
+      if (f:GetObjectType() == 'Texture') then
+        ns.StripTextures(f)
+      end
+    end
+
+    ns.skins.AddBackdrop(statusbar)
+    ns.InsetFrame(statusbar.OofBackdrop, statusbar, -1)
+    statusbar:SetStatusBarTexture(ns.LSM:Fetch('statusbar','Oof_SlightGradient'))
+  end,
 }
 
 
