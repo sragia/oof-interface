@@ -280,6 +280,7 @@ ns.skins = {
     end
     ns.skins.SkinButton(tab)
     local point, relativeTo, relativePoint, x, y = tab:GetPoint()
+
     tab:ClearAllPoints()
     if point == "LEFT" then
       -- n-th button
@@ -346,6 +347,22 @@ ns.skins = {
     ns.InsetFrame(statusbar.OofBackdrop, statusbar, -1)
     statusbar:SetStatusBarTexture(ns.LSM:Fetch('statusbar','Oof_SlightGradient'))
   end,
+  SkinPanelTabs = function(pattern, offX, offY)
+    for i = 1, 5 do
+      local f = _G[pattern:format(i)]
+      if f then
+        ns.skins.SkinTab(f)
+        if i == 1 then
+          offX = offX or 0
+          offY = offY or 0
+          ns.Offset(f, offX, offY)
+        end
+        ns.ReplaceFunctions(f, {'SetPoint'})
+      else
+        break
+      end
+    end
+  end
 }
 
 
