@@ -294,9 +294,7 @@ function obj:Initialize()
     ns.skins.SkinScrollBar(searchPanel.ScrollFrame)
 
     -- Tabs
-    ns.skins.SkinTab(mainFrame.tab1)
-    ns.skins.SkinTab(mainFrame.tab2)
-    ns.skins.SkinTab(mainFrame.tab3)
+    ns.skins.SkinPanelTabs('PVEFrameTab%i',mainFrame.OofBackdrop)
 
   end
 

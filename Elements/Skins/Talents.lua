@@ -92,7 +92,11 @@ function obj:Initialize()
 
     StripTextures(talentTexLoc, specFrame.spellsScroll.child)
 
-    skins.SkinPanelTabs('PlayerTalentFrameTab%i',0,1)
+    hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
+      skins.SkinPanelTabs('PlayerTalentFrameTab%i', mainFrame.OofBackdrop, 0, 1)
+    end)
+
+    skins.SkinPanelTabs('PlayerTalentFrameTab%i', mainFrame.OofBackdrop, 0, 1)
 
     local talentsFrame = _G['PlayerTalentFrameTalents']
 

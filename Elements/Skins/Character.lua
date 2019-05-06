@@ -138,14 +138,7 @@ function obj:Initialize()
     levelText:ClearAllPoints()
     levelText:SetPoint("TOPLEFT", -22, -17)
 
-    for i = 1, 5 do
-      local f = _G['CharacterFrameTab' .. i]
-      if f then
-        skins.SkinTab(f)
-      else
-        break
-      end
-    end
+    skins.SkinPanelTabs('CharacterFrameTab%i', mainFrame.OofBackdrop,0,0)
 
     skins.SkinScrollBar(_G['ReputationListScrollFrame'])
     skins.SkinScrollBar(_G['TokenFrameContainer'])

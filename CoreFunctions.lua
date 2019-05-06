@@ -108,3 +108,41 @@ function ns.Offset(frame, xOff, yOff)
     frame:SetPoint(p, rt, rp, x + xOff, y + yOff)
   end
 end
+
+
+local hsvFrame = CreateFrame("Colorselect")
+
+-- HSV transition, for a much prettier color transition in many cases
+-- see http://www.wowinterface.com/forums/showthread.php?t=48236
+local function GetHSVTransition(perc, r1, g1, b1, a1, r2, g2, b2, a2)
+  --get hsv color for colorA
+  hsvFrame:SetColorRGB(r1, g1, b1)
+  local h1, s1, v1 = hsvFrame:GetColorHSV() -- hue, saturation, value
+  --get hsv color for colorB
+  hsvFrame:SetColorRGB(r2, g2, b2)
+  local h2, s2, v2 = hsvFrame:GetColorHSV() -- hue, saturation, value
+  local h3 = floor(h1 - (h1 - h2) * perc)
+  -- find the shortest arc through the color circle, then interpolate
+  local diff = h2 - h1
+  if diff < -180 then
+    diff = diff + 360
+  elseif diff > 180 then
+    diff = diff - 360
+  end
+
+  h3 = (h1 + perc * diff) % 360
+  local s3 = s1 - ( s1 - s2 ) * perc
+  local v3 = v1 - ( v1 - v2 ) * perc
+  --get the RGB values of the new color
+  hsvFrame:SetColorHSV(h3, s3, v3)
+  local r, g, b = hsvFrame:GetColorRGB()
+  --interpolate alpha
+  local a = a1 - ( a1 - a2 ) * perc
+  --return the new color
+  return r, g, b, a
+end
+
+
+function ns.ColorTransformAnimation(progress, r, g, b, a, r1, g1, b1, a1)
+  return GetHSVTransition(progress, r, g, b, a, r1, g1, b1, a1)
+end

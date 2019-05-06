@@ -72,14 +72,7 @@ function obj:Initialize()
     skins.SkinPrevNextButton(prevBtn,true)
     skins.SkinPrevNextButton(nextBtn,false)
 
-    for i = 1, 5 do
-      local f = _G['SpellBookFrameTabButton' .. i]
-      if f then
-        skins.SkinTab(f)
-      else
-        break
-      end
-    end
+    skins.SkinPanelTabs('SpellBookFrameTabButton%i', mainFrame.OofBackdrop, 0, 1)
 
 
   end

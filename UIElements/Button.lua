@@ -13,8 +13,22 @@ function obj:Initialize()
     SetFontSize = function(self,size)
       self.text:SetFont(ns.defaults.font,size)
     end,
-    SetTextColor = function(self,r,g,b,a)
-      self.text:SetTextColor(r,g,b,a)
+    SetTextColor = function(this,r,g,b,a)
+      if this.options.animTextColor then
+        this.text.progress = 0
+        this.text.endProgress = this.options.animTextDur
+        local r1,g1,b1,a1 = this.text:GetTextColor()
+        this:SetScript("OnUpdate",function(self, elapsed)
+          self.text.progress = self.text.progress + elapsed
+          if self.text.progress < self.text.endProgress then
+            self.text:SetTextColor(ns.ColorTransformAnimation(self.text.progress/self.text.endProgress, r1, g1, b1, a1, r, g, b, a))
+          else
+            self:SetScript('OnUpdate', nil)
+          end
+        end)
+      else
+        this.text:SetTextColor(r,g,b,a)
+      end
     end,
     Highlight = function(self,r,g,b,a)
       self.currentColor = {r,g,b,a}
@@ -27,12 +41,27 @@ function obj:Initialize()
     end,
     SetText = function(self,text)
       self.text:SetText(text)
-    end
+    end,
+    SetTextureColor = function(self, r, g, b, a)
+      if self.texture then
+        self.texture:SetVertexColor(r,g,b,a)
+      end
+    end,
   }
 
   local function constructor(name,parent,options,frame)
+
     local btn = frame or CreateFrame("Button",name,parent)
     -- Styling
+    btn.options = ns.MergeTables({
+        disabledBackdrop = {0.1, 0.1, 0.1, 1},
+        disabledTextColor = {.9, .9, .9, 1},
+        disabledTextureColor = {1, 1, 1, 0.4},
+        animTextColor = false,
+        animTextDur = 0.2
+      },
+      options or {}
+    )
     btn:SetParent(parent)
     UIElements.ApplyBackdrop(btn,0,0,0,1)
     if options and options.color then
@@ -84,10 +113,12 @@ function obj:Initialize()
         -- enabled
         self:SetTextColor(1,1,1,1)
         self.currentColor = self.defaultColor
+        self:SetTextureColor(1,1,1,1)
       else
         -- disabled
-        self:SetTextColor(0.9, 0.9, 0.9, 1)
-        self.currentColor = {0.1, 0.1, 0.1, 1}
+        self:SetTextureColor(unpack(self.options.disabledTextureColor))
+        self:SetTextColor(unpack(self.options.disabledTextColor))
+        self.currentColor = self.options.disabledBackdrop
       end
       self:SetBackdropColor(unpack(self.currentColor))
     end

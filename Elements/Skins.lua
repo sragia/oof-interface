@@ -273,12 +273,12 @@ ns.skins = {
       dropdown.skinned = true
     end
   end,
-  SkinTab = function(tab)
+  SkinTab = function(tab, parent, options)
     ns.StripTextures(tab)
     for _, texLoc in ipairs(tabTexturesLoc) do
       ns.StripTextures(_G[tab:GetName() .. texLoc])
     end
-    ns.skins.SkinButton(tab)
+    ns.skins.SkinButton(tab, options)
     local point, relativeTo, relativePoint, x, y = tab:GetPoint()
 
     tab:ClearAllPoints()
@@ -287,7 +287,7 @@ ns.skins = {
       tab:SetPoint(point, relativeTo, relativePoint, 1, 0)
     else
       -- first
-      tab:SetPoint(point, relativeTo, relativePoint, x, y - 1)
+      tab:SetPoint(point, parent or relativeTo, relativePoint, x, y - 1)
     end
   end,
   SkinInput = function(input)
@@ -347,17 +347,18 @@ ns.skins = {
     ns.InsetFrame(statusbar.OofBackdrop, statusbar, -1)
     statusbar:SetStatusBarTexture(ns.LSM:Fetch('statusbar','Oof_SlightGradient'))
   end,
-  SkinPanelTabs = function(pattern, offX, offY)
+  SkinPanelTabs = function(pattern, parent, offX, offY)
     for i = 1, 5 do
       local f = _G[pattern:format(i)]
       if f then
-        ns.skins.SkinTab(f)
+        ns.skins.SkinTab(f, parent, {disabledTextColor = { 1, 0.73, 0.07, 1}, animTextColor = true})
+        f:SetParent(parent)
         if i == 1 then
           offX = offX or 0
           offY = offY or 0
           ns.Offset(f, offX, offY)
         end
-        ns.ReplaceFunctions(f, {'SetPoint'})
+        ns.ReplaceFunctions(f, {'SetPoint', 'ClearAllPoints'})
       else
         break
       end
