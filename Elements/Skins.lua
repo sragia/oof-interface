@@ -176,12 +176,17 @@ ns.skins = {
   end,
   SkinScrollBar = function(scrollbar)
     local bar = scrollbar.ScrollBar or scrollbar.scrollBar
-    SkinScrollBarButtons(scrollbarTex, bar)
-    SkinScrollBarButtons(alternativeScrollBarTexLoc, scrollbar)
-    UI.defaultFunc.ApplyBackdrop(bar)
     for _, tex in ipairs({scrollbar:GetRegions()}) do
       ns.StripTextures(tex)
     end
+    for _, tex in ipairs({bar:GetRegions()}) do
+      ns.StripTextures(tex)
+    end
+
+    SkinScrollBarButtons(scrollbarTex, bar)
+    SkinScrollBarButtons(alternativeScrollBarTexLoc, scrollbar)
+    UI.defaultFunc.ApplyBackdrop(bar)
+
     for _, texLoc in ipairs({
       'Bottom','Middle','Top','ScrollBarBottom','ScrollBarMiddle','ScrollBarTop'
     }) do
