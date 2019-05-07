@@ -82,6 +82,13 @@ function obj:Initialize()
     skins.SkinClose(borderFrame.CloseButton)
     skins.SkinPanelText(borderFrame.TitleText)
     skins.SkinHelpButton(borderFrame.Tutorial)
+
+    borderFrame.MaximizeMinimizeFrame.MaximizeButton:ClearAllPoints()
+    borderFrame.MaximizeMinimizeFrame.MaximizeButton:SetPoint('RIGHT',borderFrame.CloseButton,'LEFT',-3,0)
+    borderFrame.MaximizeMinimizeFrame.MinimizeButton:ClearAllPoints()
+    borderFrame.MaximizeMinimizeFrame.MinimizeButton:SetPoint('RIGHT',borderFrame.CloseButton,'LEFT',-3,0)
+    skins.SkinButton(borderFrame.MaximizeMinimizeFrame.MaximizeButton,{texture = ns.GetTexture('maximize'), width = 20, height = 20, textureInset = 3})
+    skins.SkinButton(borderFrame.MaximizeMinimizeFrame.MinimizeButton,{texture = ns.GetTexture('minimize'), width = 20, height = 20, textureInset = 3})
     ns.Offset(borderFrame.Tutorial, -20, 0)
     skins.AddBackdrop(mainFrame)
 
@@ -108,6 +115,8 @@ function obj:Initialize()
   if db then
     C_Timer.After(0.3, SkinFrame)
 
+    hooksecurefunc(_G['WorldMapFrame'],'HandleUserActionMinimizeSelf', SkinFrame)
+    hooksecurefunc(_G['WorldMapFrame'],'HandleUserActionMaximizeSelf', SkinFrame)
   -- local frame = CreateFrame("Frame")
   -- frame:RegisterEvent("ADDON_LOADED")
   -- frame:SetScript("OnEvent", function(self, event, addonName)

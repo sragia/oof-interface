@@ -50,7 +50,7 @@ function obj:Initialize()
   }
 
   local function constructor(name,parent,options,frame)
-
+    options = options or {}
     local btn = frame or CreateFrame("Button",name,parent)
     -- Styling
     btn.options = ns.MergeTables({
@@ -60,7 +60,7 @@ function obj:Initialize()
         animTextColor = false,
         animTextDur = 0.2
       },
-      options or {}
+      options
     )
     btn:SetParent(parent)
     UIElements.ApplyBackdrop(btn,0,0,0,1)
@@ -72,6 +72,14 @@ function obj:Initialize()
     end
     if options and options.borderColor then
       btn:SetBackdropBorderColor(unpack(options.borderColor))
+    end
+
+    -- Size
+    if options.width then
+      btn:SetWidth(options.width)
+    end
+    if options.height then
+      btn:SetHeight(options.height)
     end
     -- Text
     local buttonText = btn.text or btn:CreateFontString(nil, "OVERLAY")
@@ -92,7 +100,7 @@ function obj:Initialize()
       local tex = btn.texture or btn:CreateTexture(nil,"OVERLAY")
       btn.texture = tex
       tex:SetTexture(options.texture)
-      tex:SetAllPoints()
+      ns.InsetFrame(tex, btn, options.textureInset or 0)
     end
     -- Hover
     btn:SetScript("OnEnter",function(self)

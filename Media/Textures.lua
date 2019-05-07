@@ -44,7 +44,9 @@ local textureMap = {
   arrow_right = 'Icons/arrow-right.tga',
   refresh = 'Icons/refresh.tga',
   icon_right = 'Icons/icon-right.tga',
-  icon_left = 'Icons/icon-left.tga'
+  icon_left = 'Icons/icon-left.tga',
+  minimize = 'Icons/minimize.tga',
+  maximize = 'Icons/maximize.tga'
 }
 
 function ns.GetTexture(texture)
