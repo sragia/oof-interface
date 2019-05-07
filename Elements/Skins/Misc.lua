@@ -23,13 +23,49 @@ function obj:Initialize()
     end
   end
 
-  local function SkinFrame()
-    local mainFrame = _G['EncounterJournal']
+  local function SkinPopups()
+    for i=1,5 do
+      local popup = _G['StaticPopup'..i]
+
+      if popup then
+        SF.ApplyBackdrop(popup)
+        for j = 1, 5 do
+          local btn = popup['button'..j]
+          if btn then
+            skins.SkinButton(btn)
+          end
+        end
+        ns.StripTextures(_G['StaticPopup' .. i .. 'EditBoxLeft'])
+        ns.StripTextures(_G['StaticPopup' .. i .. 'EditBoxRight'])
+        ns.StripTextures(_G['StaticPopup' .. i .. 'EditBoxMid'])
+        SF.ApplyBackdrop(popup.editBox)
+        popup.editBox:SetTextInsets(5,5,0,0)
+      end
+    end
+  end
+
+  local function SkinDropdowns()
+    -- Skin Dropdown Menu
+    for i= 1, 5 do
+      local dropdownList = _G['DropDownList' .. i]
+      if dropdownList then
+        local dropdownListBackdrop = _G['DropDownList' .. i .. 'Backdrop']
+        ns.UIElements.defaultFunc.ApplyBackdrop(dropdownListBackdrop)
+        ns.StripTextures(dropdownList)
+        ns.UIElements.defaultFunc.ApplyBackdrop(_G['DropDownList' .. i .. 'MenuBackdrop'])
+      end
+    end
+  end
+
+  local function SkinFrames()
+    SkinPopups()
+    SkinDropdowns()
+
 
   end
 
   if db then
-    SkinFrame()
+    C_Timer.After(0.2, SkinFrames)
 
   -- local frame = CreateFrame("Frame")
   -- frame:RegisterEvent("ADDON_LOADED")

@@ -380,14 +380,6 @@ function obj:Initialize()
   local sortOrder = 100
   local db = ns.DB.profile.skins
 
-  -- Skin Dropdown Menu
-  local dropdownListBackdrop = _G['DropDownList1Backdrop']
-  ns.UIElements.defaultFunc.ApplyBackdrop(dropdownListBackdrop)
-  local dropdownList = _G['DropDownList1']
-  ns.StripTextures(dropdownList)
-
-  ns.UIElements.defaultFunc.ApplyBackdrop(_G['DropDownList1MenuBackdrop'])
-
 
 
   -- OPTIONS CONFIG --
