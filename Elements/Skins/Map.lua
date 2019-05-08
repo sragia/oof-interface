@@ -13,6 +13,9 @@ function obj:Initialize()
   local skins = ns.skins
 
   local texLoc = {
+    BlackoutFrame = {
+      'Blackout'
+    },
     BorderFrame = {
       'TitleBg',
       'TopTileStreaks',
@@ -72,6 +75,22 @@ function obj:Initialize()
   local function SkinFrame()
     local mainFrame = _G['WorldMapFrame']
 
+
+    if mainFrame:IsMaximized() then
+      local width, height = GetScreenWidth(), GetScreenHeight()
+      local calcHeight = height * 0.95
+      local calcWidth = ( calcHeight - 67) * 1.497
+      mainFrame:SetSize(calcWidth, calcHeight)
+      mainFrame:ClearAllPoints()
+      mainFrame:SetPoint('CENTER')
+      mainFrame.ScrollContainer.Child.TiledBackground:Hide()
+      mainFrame.BlackoutFrame:Hide()
+    end
+
+    mainFrame:SynchronizeDisplayState()
+
+    mainFrame:OnFrameSizeChanged()
+
     StripTextures(texLoc, mainFrame)
 
 
@@ -113,10 +132,23 @@ function obj:Initialize()
   end
 
   if db then
-    C_Timer.After(0.3, SkinFrame)
+    -- C_Timer.After(0.3, SkinFrame)
+    local frame = _G['WorldMapFrame']
+    frame.OofSetPoint = frame.SetPoint
+    frame.SetPoint = function(self,...)
+      if frame:IsMaximized() then
+        frame:OofSetPoint("CENTER")
+      else
+        frame:OofSetPoint(...)
+      end
+    end
+    ns.ReplaceFunctions(frame.BlackoutFrame,{'Show'})
+    UIPanelWindows['WorldMapFrame'].maximizePoint =  "CENTER" ;
+    hooksecurefunc(frame,'HandleUserActionMinimizeSelf', SkinFrame)
+    hooksecurefunc(frame,'HandleUserActionMaximizeSelf', SkinFrame)
+    frame:HookScript('OnShow',SkinFrame)
 
-    hooksecurefunc(_G['WorldMapFrame'],'HandleUserActionMinimizeSelf', SkinFrame)
-    hooksecurefunc(_G['WorldMapFrame'],'HandleUserActionMaximizeSelf', SkinFrame)
+    -- hooksecurefunc(_G['WorldMapFrame'],'OnShow', SkinFrame)
   -- local frame = CreateFrame("Frame")
   -- frame:RegisterEvent("ADDON_LOADED")
   -- frame:SetScript("OnEvent", function(self, event, addonName)
