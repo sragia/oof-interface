@@ -22,6 +22,18 @@ local scrollbarTex = {
     Normal = 'scroll_up',
     Pushed = 'scroll_up'
   },
+  ScrollDown = {
+    Disabled = 'scroll_down_disabled',
+    Highlight = 'btn_highlight',
+    Normal = 'scroll_down',
+    Pushed = 'scroll_down'
+  },
+  ScrollUp = {
+    Disabled = 'scroll_up_disabled',
+    Highlight = 'btn_highlight',
+    Normal = 'scroll_up',
+    Pushed = 'scroll_up'
+  },
   ThumbTexture = 'scroll_thumb',
   DownButton = {
     Disabled = 'scroll_down_disabled',
@@ -99,7 +111,7 @@ local tabTexturesLoc = {
 }
 
 local inputTexLoc = {
-  'Left', 'Middle', 'Right'
+  'Left', 'Middle', 'Right', 'Mid'
 }
 
 local descriptionTexLoc = {
@@ -119,6 +131,17 @@ local searchTexLoc = {
     'Middle',
     'Right'
 
+}
+
+local blueMenuTexLoc = {
+  'BLCorner',
+  'BRCorner',
+  'BottomBar',
+  'LeftBar',
+  'RightBar',
+  'TLCorner',
+  'TRCorner',
+  'TopBar'
 }
 
 ns.skins = {
@@ -303,9 +326,11 @@ ns.skins = {
     end
     input:SetTextInsets(5,5,0,0)
     UI.defaultFunc.ApplyBackdrop(input)
-    input.Instructions:ClearAllPoints()
-    input.Instructions:SetPoint("TOPLEFT", 5, 0)
-    input.Instructions:SetPoint("BOTTOMRIGHT", -5, 0)
+    if input.Instructions then
+      input.Instructions:ClearAllPoints()
+      input.Instructions:SetPoint("TOPLEFT", 5, 0)
+      input.Instructions:SetPoint("BOTTOMRIGHT", -5, 0)
+    end
   end,
   SkinDescription = function(desc)
     for _, tex in ipairs(descriptionTexLoc) do
@@ -366,6 +391,25 @@ ns.skins = {
         ns.ReplaceFunctions(f, {'SetPoint', 'ClearAllPoints'})
       else
         break
+      end
+    end
+  end,
+  SkinMinMaxButton = function(minmaxframe, closebtn)
+    minmaxframe.MaximizeButton:ClearAllPoints()
+    minmaxframe.MaximizeButton:SetPoint('RIGHT',closebtn,'LEFT',-3,0)
+    minmaxframe.MinimizeButton:ClearAllPoints()
+    minmaxframe.MinimizeButton:SetPoint('RIGHT',closebtn,'LEFT',-3,0)
+    ns.skins.SkinButton(minmaxframe.MaximizeButton,{texture = ns.GetTexture('maximize'), width = 20, height = 20, textureInset = 3})
+    ns.skins.SkinButton(minmaxframe.MinimizeButton,{texture = ns.GetTexture('minimize'), width = 20, height = 20, textureInset = 3})
+  end,
+  FindAndSkinBlueMenu = function(frame)
+    for _, f in ipairs({frame:GetChildren()}) do
+      if ( f.BLCorner ) then
+        for _, tex in ipairs(blueMenuTexLoc) do
+          if f[tex] then
+            ns.StripTextures(f[tex])
+          end
+        end
       end
     end
   end

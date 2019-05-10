@@ -102,12 +102,7 @@ function obj:Initialize()
     skins.SkinPanelText(borderFrame.TitleText)
     skins.SkinHelpButton(borderFrame.Tutorial)
 
-    borderFrame.MaximizeMinimizeFrame.MaximizeButton:ClearAllPoints()
-    borderFrame.MaximizeMinimizeFrame.MaximizeButton:SetPoint('RIGHT',borderFrame.CloseButton,'LEFT',-3,0)
-    borderFrame.MaximizeMinimizeFrame.MinimizeButton:ClearAllPoints()
-    borderFrame.MaximizeMinimizeFrame.MinimizeButton:SetPoint('RIGHT',borderFrame.CloseButton,'LEFT',-3,0)
-    skins.SkinButton(borderFrame.MaximizeMinimizeFrame.MaximizeButton,{texture = ns.GetTexture('maximize'), width = 20, height = 20, textureInset = 3})
-    skins.SkinButton(borderFrame.MaximizeMinimizeFrame.MinimizeButton,{texture = ns.GetTexture('minimize'), width = 20, height = 20, textureInset = 3})
+    skins.SkinMinMaxButton(borderFrame.MaximizeMinimizeFrame,borderFrame.CloseButton)
     ns.Offset(borderFrame.Tutorial, -20, 0)
     skins.AddBackdrop(mainFrame)
 

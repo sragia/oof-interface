@@ -104,7 +104,7 @@ function ns.Offset(frame, xOff, yOff)
   local numPoints = frame:GetNumPoints()
 
   for i = 1, numPoints do
-    local p, rt, rp, x, y = frame:GetPoint()
+    local p, rt, rp, x, y = frame:GetPoint(i)
     frame:SetPoint(p, rt, rp, x + xOff, y + yOff)
   end
 end
