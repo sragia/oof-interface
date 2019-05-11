@@ -540,7 +540,7 @@ function obj:Initialize()
       elementOrder = elementOrder + 50
     end
   end
-  TEST = options
+
   opt.RegisterListItem(parentId, id, text, sortOrder, options)
 end
 

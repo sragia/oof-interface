@@ -9,7 +9,7 @@ function obj:Initialize()
 
   local methods = {
     Clear = function(self)
-
+      self.text:SetText("")
     end,
     SetText = function(self, text)
       self.text:SetText(text)

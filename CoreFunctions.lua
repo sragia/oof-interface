@@ -146,3 +146,19 @@ end
 function ns.ColorTransformAnimation(progress, r, g, b, a, r1, g1, b1, a1)
   return GetHSVTransition(progress, r, g, b, a, r1, g1, b1, a1)
 end
+
+
+local function copyTableInternal(source, seen)
+  if type(source) ~= "table" then return source end
+  if seen[source] then return seen[source] end
+  local rv = {}
+  seen[source] = rv
+  for k, v in pairs(source) do
+    rv[copyTableInternal(k, seen)] = copyTableInternal(v, seen)
+  end
+  return rv
+end
+
+function ns.CopyTable(source)
+  return copyTableInternal(source, {})
+end

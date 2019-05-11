@@ -33,6 +33,7 @@ function obj:Initialize()
   local function Release(self)
     self:Clear()
     self:ClearAllPoints()
+    self:Hide()
     self.free = true
   end
 
@@ -43,6 +44,7 @@ function obj:Initialize()
           f:Clear()
           f.free = false
           f = elementTypes[type].constructor(name,parent,options,f)
+          f:Show()
           return f
         end
       end
@@ -63,6 +65,7 @@ function obj:Initialize()
           end
         end
       end
+      element:Show()
       return element
     end
   end

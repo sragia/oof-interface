@@ -210,6 +210,16 @@ local defaults = {
                 timeYOffset = 0,
             },
         },
+        panels = {
+            --[[
+                [panelID] = {
+                    panelName = ""
+                    bgColor = {},
+                    borderColor = {},
+                    borderSize = 1,
+                }
+            ]]
+        },
         CUSTOMSAVE = {}
     },
     global = {

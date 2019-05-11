@@ -68,7 +68,7 @@ function obj:Initialize()
     end
   end
   ns.ToggleOptions = ToggleOptions
-  C_Timer.After(1,ToggleOptions) -- TODO: Remove
+  -- C_Timer.After(1,ToggleOptions) -- TODO: Remove
 
   -- LDB and Minimap Icon setup
   local LDB = LibStub:GetLibrary("LibDataBroker-1.1")

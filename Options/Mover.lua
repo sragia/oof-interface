@@ -246,6 +246,13 @@ function obj:Initialize()
     }
   end
 
-  local fun
+  function ns.mover.RemoveElement(name)
+    for i = 1, #containers do
+      if containers[i].name == name then
+        table.remove(containers, i)
+        break
+      end
+    end
+  end
 
 end
