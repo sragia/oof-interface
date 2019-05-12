@@ -162,3 +162,40 @@ end
 function ns.CopyTable(source)
   return copyTableInternal(source, {})
 end
+
+function ns.AddMissingTableEntries(data,DEFAULT)
+  if not data or not DEFAULT then return data end
+  local rv = data
+  for k,v in pairs(DEFAULT) do
+    if rv[k] == nil then
+      rv[k] = v
+    elseif type(v) == "table" then
+      if type(rv[k]) == "table" then
+        rv[k] = AddMissingTableEntries(rv[k],v)
+      else
+        rv[k] = AddMissingTableEntries({},v)
+      end
+    end
+  end
+  return rv
+end
+
+function ns.AlphaAnimation(f, name, from, to, durr)
+  f.animations = f.animations or {}
+  f.animations[name] = {}
+
+  local animGrp = f.animations[name].group or f:CreateAnimationGroup()
+  f.animations[name].group = animGrp
+  local animation = f.animations[name].alphaAnim or animGrp:CreateAnimation("Alpha")
+  f.animations[name].alphaAnim = animation
+  animation:SetFromAlpha(from)
+  animation:SetToAlpha(to)
+  animation:SetDuration(durr)
+  animation:SetSmoothing("IN_OUT")
+  animGrp:SetScript('OnFinished',function(self)
+    f:SetAlpha(to)
+  end)
+  animGrp:SetScript('OnStop', function(self)
+    f:SetAlpha(to)
+  end)
+end

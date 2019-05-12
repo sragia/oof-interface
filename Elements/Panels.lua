@@ -25,7 +25,7 @@ function obj:Initialize()
     height = 60,
     x = 450,
     y = 300,
-    frameStrata = "LOW"
+    frameStrata = 1
   }
 
   local function GeneratePanelId()
@@ -66,9 +66,7 @@ function obj:Initialize()
   function obj:AddRefreshMovers()
     for id, panelData in pairs(db) do
       local f = panelData.frame
-      print(id,f, panelMovers[id])
       if f and not panelMovers[id]  then
-        print('adding')
         panelMovers[id] = true
         mover.CreateMovableElement(id, f, function(left, bottom)
           db[id].x = left
@@ -76,7 +74,7 @@ function obj:Initialize()
           f:ClearAllPoints()
           f:SetPoint("BOTTOMLEFT", left, bottom)
           obj:RefreshPanel(f, db[id])
-        end)
+        end, panelData.frameName)
       end
     end
   end
@@ -96,6 +94,7 @@ function obj:Initialize()
     db[id].frame = panel
     obj:AddRefreshMovers()
     obj:RefreshPanelOptions(true)
+    self:SendCall('PANEL_ADD', id)
   end
 
   function obj:DeletePanel(data, id)
@@ -105,10 +104,36 @@ function obj:Initialize()
     obj:RefreshPanelOptions(true)
     mover.RemoveElement(id)
     panelMovers[id] = nil
+    self:SendCall('PANEL_DELETE', id)
   end
 
   obj:InitPanels()
   obj:AddRefreshMovers()
+
+
+  function obj:GetAvailablePanels()
+    local panels = {}
+    for id, panel in pairs(db) do
+      panels[id] = panel.frameName or id
+    end
+    return panels
+  end
+
+  function obj:GetPanelFrame(id)
+    return db[id].frame
+  end
+
+  local callbacks = {}
+
+  function obj:RegisterCallback(func)
+    table.insert(callbacks, func)
+  end
+
+  function obj:SendCall(event, value)
+    for _, func in ipairs(callbacks) do
+      func(event, value)
+    end
+  end
 
 
   -- OPTIONS CONFIG --
@@ -125,7 +150,6 @@ function obj:Initialize()
           type = "execute",
           width = "full",
           func = function()
-            print('adding new panel')
             obj:AddNewPanel()
           end
         },
@@ -157,6 +181,18 @@ function obj:Initialize()
         name = panelData.frameName or id,
         order = order,
         args = {
+          frameName = {
+            type = 'input',
+            name = L['Frame Name'],
+            order = 0,
+            get = function() return db[id].frameName end,
+            set = function(self, value)
+              db[id].frameName = value
+              obj:RefreshPanel(db[id].frame, db[id])
+              obj:RefreshPanelOptions(true)
+              mover.RefreshDisplayName(id, value)
+            end,
+          },
           width = {
             type = 'range',
             name = L['Width'],
@@ -164,7 +200,7 @@ function obj:Initialize()
             softMax = 1500,
             softMin = 0,
             step = 1,
-            get = function() print(id) return db[id].width end,
+            get = function() return db[id].width end,
             set = function(self, width)
               db[id].width = width
               obj:RefreshPanel(db[id].frame, db[id])
@@ -234,8 +270,6 @@ function obj:Initialize()
             type = "execute",
             width = "full",
             func = function()
-              print('Delete ')
-              print(db[id], id)
               obj:DeletePanel(db[id],id)
             end
           }
@@ -244,13 +278,11 @@ function obj:Initialize()
       order = order + 10
     end
     if refresh then
-      print('refresh yo')
       opt.RefreshListOptions(parentId, id, options)
     end
   end
 
   obj:RefreshPanelOptions()
-ViragDevTool_AddData(options)
   opt.RegisterListItem(parentId, id, text, sortOrder, options)
 end
 

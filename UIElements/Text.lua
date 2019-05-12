@@ -15,7 +15,8 @@ function obj:Initialize()
       self.text:SetText(text)
     end,
     SetFontSize = function(self, size)
-      self.text:SetFont(ns.defaults.font, size, 'OUTLINE')
+      local font, _, flag = self.text:GetFont()
+      self.text:SetFont(font, size, flag)
     end,
     SetFont = function(self,font,size,flags)
       self.text:SetFont(font,size,flags)
@@ -35,6 +36,10 @@ function obj:Initialize()
     text:SetWidth(0)
     textFrame.text = text
     textFrame:SetSize(0,0)
+
+    if options.justification then
+      text:SetJustifyH(options.justification);
+    end
 
     for name, func in pairs(methods) do
       textFrame[name] = func

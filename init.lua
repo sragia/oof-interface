@@ -220,6 +220,7 @@ local defaults = {
                 }
             ]]
         },
+        databrokers = {},
         CUSTOMSAVE = {}
     },
     global = {

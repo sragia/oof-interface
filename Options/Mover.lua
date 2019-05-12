@@ -122,13 +122,20 @@ function obj:Initialize()
     for _, container in ipairs(containers) do
       local f = UIElements.CreateFrame("Panel", nil, moverContainer)
       f:SetClampedToScreen(true)
-      f:SetText(container.name)
-      f:SetFontSize(20)
+      f:SetText(container.displayName or container.name)
       f.setter = container.setter
       f.frame = container.frame
       table.insert(movers, f)
       local left,bottom,width,height = container.frame:GetRect()
       local scale = container.frame:GetScale()
+
+      -- Text
+      if height < 100 then
+        f:SetFontSize(12)
+      else
+        f:SetFontSize(20)
+      end
+
       container.values = {left,bottom}
       f:SetFrameStrata("FULLSCREEN")
       f:SetFrameLevel(99)
@@ -137,7 +144,9 @@ function obj:Initialize()
 
       f:SetAlpha(0.9)
       f:SetBackdropBorderColor(.5,.5,.5,1)
-      AddNudgeButton(f)
+      if not container.disableNudge then
+        AddNudgeButton(f)
+      end
 
       -- Draggable
       f:SetMovable(true)
@@ -150,8 +159,10 @@ function obj:Initialize()
         self.isMoving = false;
         local left,bottom,width,height = self:GetRect()
         container.setter(left/scale,bottom/scale)
-        self.nudgeContainer.xText:SetText(string.format("%i",left))
-        self.nudgeContainer.yText:SetText(string.format("%i",bottom))
+        if self.nudgeContainer then
+          self.nudgeContainer.xText:SetText(string.format("%i",left))
+          self.nudgeContainer.yText:SetText(string.format("%i",bottom))
+        end
       end
       f:SetScript("OnDragStop", stopMoving)
     end
@@ -167,11 +178,13 @@ function obj:Initialize()
     else
       for id, mover in ipairs(movers) do
         movers[id] = nil
-        -- nudgeBtns
-        for _, nudge in ipairs(mover.nudge) do
-          nudge:Release()
+        if mover.nudge then
+          -- nudgeBtns
+          for _, nudge in ipairs(mover.nudge) do
+            nudge:Release()
+          end
+          mover.nudge = nil
         end
-        mover.nudge = nil
         mover:Release()
       end
       moverContainer:Hide()
@@ -237,12 +250,14 @@ function obj:Initialize()
 
 
 
-  function ns.mover.CreateMovableElement(name, targetContainer, setter)
+  function ns.mover.CreateMovableElement(name, targetContainer, setter, displayName, disableNudge)
     containers[#containers + 1] = {
       name = name,
       frame = targetContainer,
       setter = setter,
       values = {}, -- Holds starting ("TRUE") values left,bottom,width,height
+      disableNudge = disableNudge,
+      displayName = displayName
     }
   end
 
@@ -251,6 +266,14 @@ function obj:Initialize()
       if containers[i].name == name then
         table.remove(containers, i)
         break
+      end
+    end
+  end
+
+  function ns.mover.RefreshDisplayName(name, displayName)
+    for i = 1, #containers do
+      if containers[i].name == name then
+        containers[i].displayName = displayName
       end
     end
   end

@@ -38,6 +38,7 @@ function obj:Initialize()
   end
 
   local function CreateFrame(type,name,parent,options)
+    options = options or {}
     if framePool[type] then
       for _, f in ipairs(framePool[type]) do
         if f.free then
@@ -71,6 +72,7 @@ function obj:Initialize()
   end
 
   local function UpgradeExistingFrame(type,frame,parent,options)
+    options = options or {}
     if elementTypes[type] then
       local element = elementTypes[type].constructor(nil, parent, options, frame)
       if elementTypes[type].funcs then

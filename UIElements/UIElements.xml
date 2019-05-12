@@ -5,6 +5,7 @@
 <Script file="Text.lua"/>
 <Script file="Panel.lua"/>
 <Script file="Button.lua"/>
+<Script file="Texture.lua"/>
 
 
 </Ui>

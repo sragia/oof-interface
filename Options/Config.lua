@@ -132,10 +132,13 @@ function obj:Initialize()
   opt.RegisterListItem = RegisterListItem
 
 
-  function opt.RefreshListOptions(parentId, id, optionsTable)
+  function opt.RefreshListOptions(parentId, id, optionsTable, justUpdate)
     if listItems[parentId] and listItems[parentId][id] then
       listItems[parentId][id].optionsTable = optionsTable
-      SwitchConfig(optionsTable)
+      -- SwitchConfig(optionsTable)
+      if not justUpdate then
+        AceConfig:RegisterOptionsTable("Oof_List", optionsTable);
+      end
     end
   end
 
@@ -177,5 +180,5 @@ function obj:Initialize()
     [6] = "FULLSCREEN",
     [7] = "FULLSCREEN_DIALOG",
     [8] = "TOOLTIP"
-}
+  }
 end
