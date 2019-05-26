@@ -1,7 +1,7 @@
 local addon, ns = ...
 
 local L = ns.L
-local obj = ns.CreateNewModule("Options_Frame")
+local obj = ns.CreateNewModule("Options_Frame", -7)
 
 function obj:Initialize()
   local UIElements = ns.UIElements

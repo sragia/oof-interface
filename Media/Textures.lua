@@ -1,6 +1,6 @@
 local addon, ns = ...
 local L = ns.L
-local obj = ns.CreateNewModule("Media_Fonts")
+local obj = ns.CreateNewModule("Media_Fonts", -1)
 local dir = [[Interface/Addons/Oof/Media/]]
 
 local statusBarTextures = {
@@ -46,7 +46,8 @@ local textureMap = {
   icon_right = 'Icons/icon-right.tga',
   icon_left = 'Icons/icon-left.tga',
   minimize = 'Icons/minimize.tga',
-  maximize = 'Icons/maximize.tga'
+  maximize = 'Icons/maximize.tga',
+  guild = 'Icons/guild.tga'
 }
 
 function ns.GetTexture(texture)

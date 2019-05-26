@@ -1,6 +1,6 @@
 local addon, ns = ...
 local L = ns.L
-local obj = ns.CreateNewModule("Media_Fonts")
+local obj = ns.CreateNewModule("Media_Fonts", -2 )
 ns.LSM:Register('font','CharlesWright',[[Interface\Addons\Oof\Media\Font\CharlesWright.ttf]])
 function obj:Initialize()
   local db = ns.DB.profile.media.fonts
@@ -784,4 +784,10 @@ function obj:Initialize()
   }
   ns.switchBoard.AddToOptionsTable('media', 'fonts', options)
 
+end
+
+function ns.GetFont(font)
+  local f = ns.LSM:Fetch('font', font)
+
+  return f
 end

@@ -176,9 +176,21 @@ function obj:Initialize()
     self:RefreshDataBroker(db[name].frame, db[name])
   end
 
+  function obj:AddNewBroker(event, name, dataobj)
+    print(name);
+    if not enabledBrokers[name] then
+      enabledBrokers[name] = true
+      local f = self:CreateDataBrokerFrame(name, dataobj)
+      self:AddRefreshMovers()
+      self:RefreshOptions(true, true)
+    end
+  end
+
   ldb.RegisterCallback(self, "LibDataBroker_AttributeChanged__text", "UpdateText")
 
   ldb.RegisterCallback(self, "LibDataBroker_AttributeChanged__icon", "UpdateIcon")
+
+  ldb.RegisterCallback(self, "LibDataBroker_DataObjectCreated", "AddNewBroker")
 
 
 

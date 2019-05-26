@@ -1,6 +1,6 @@
 local addon, ns = ...
 local L = ns.L
-local obj = ns.CreateNewModule("Options_Frame")
+local obj = ns.CreateNewModule("Options_Frame", -10)
 
 function obj:Initialize()
   local AceGUI = LibStub("AceGUI-3.0")

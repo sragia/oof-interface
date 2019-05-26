@@ -46,12 +46,15 @@ local initFiles = {}
 
 local modules = {}
 
-function ns.CreateNewModule(name)
+local moduleLoadIndex = 0
+function ns.CreateNewModule(name, prio)
     local object = {}
     modules[#modules + 1] = {
         name = name,
-        object = object
+        object = object,
+        priority = prio or moduleLoadIndex
     }
+    moduleLoadIndex = moduleLoadIndex + 1
     return object
 end
 
@@ -70,6 +73,8 @@ function ns.Initialize(func)
     initFiles[#initFiles + 1] = func
 end
 local function InitializeFiles()
+
+    table.sort(modules, function(a,b) return a.priority < b.priority end)
     for _, m in ipairs(modules) do
         m.object:Initialize()
     end

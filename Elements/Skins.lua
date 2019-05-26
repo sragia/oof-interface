@@ -1,6 +1,6 @@
 local addon, ns = ...
 local L = ns.L
-local obj = ns.CreateNewModule("Elements_Skins")
+local obj = ns.CreateNewModule("Elements_Skins", 1)
 local registeredSkins = {}
 local UI = ns.UIElements
 local SF = UI.defaultFunc

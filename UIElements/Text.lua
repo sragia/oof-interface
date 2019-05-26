@@ -1,7 +1,7 @@
 local addon, ns = ...
 
 local L = ns.L
-local obj = ns.CreateNewModule("UI_Text")
+local obj = ns.CreateNewModule("UI_Text", -99)
 
 function obj:Initialize()
 
@@ -16,7 +16,7 @@ function obj:Initialize()
     end,
     SetFontSize = function(self, size)
       local font, _, flag = self.text:GetFont()
-      self.text:SetFont(font, size, flag)
+      self.text:SetFont(font or ns.defaults.font, size, flag or "OUTLINE")
     end,
     SetFont = function(self,font,size,flags)
       self.text:SetFont(font,size,flags)

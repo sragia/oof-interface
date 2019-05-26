@@ -4,19 +4,27 @@ Chat Copy
 Chat History
 Chat timestamps
 
-Data Broker
-Custom Panels
+Skinning:
+  Ace
+  Achievements
+  Collections
+  Interface
+  Keybindings
+  macros
+  Shop
+  System
 
-Blizz Addon Skinning
 
 Actionbars
 Unitframes
 
 Minimap Mail Icon
+
+
 Chat Social showing que
 
 
 Bugs
-Buff/Debuffs font not setting on load
+Buff/Debuffs font not setting on load sometimes
 Voice Icons on first channel join
 Minimap Buttons Circle

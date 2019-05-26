@@ -1,6 +1,6 @@
 local addon, ns = ...
 
-local obj = ns.CreateNewModule("Elements_BuffsDebuffs")
+local obj = ns.CreateNewModule("Elements_BuffsDebuffs", 100)
 local L = ns.L
 local DIRECTION_TO_POINT = {
   DOWN_RIGHT = "TOPLEFT",

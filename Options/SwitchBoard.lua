@@ -1,5 +1,5 @@
 local addon, ns = ...
-local obj = ns.CreateNewModule("Options_SwitchBoard")
+local obj = ns.CreateNewModule("Options_SwitchBoard", -8)
 
 function obj:Initialize()
   local UIElements = ns.UIElements

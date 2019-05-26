@@ -1,5 +1,5 @@
 local addon, ns = ...
-local obj = ns.CreateNewModule("UI_Core")
+local obj = ns.CreateNewModule("UI_Core", -100)
 
 function obj:Initialize()
   local UIElements = ns.UIElements
@@ -21,10 +21,11 @@ function obj:Initialize()
 
   UIElements.ApplyBackdrop = ApplyBackdrop
 
-  local function RegisterFrameType(type,const,funcs)
+  local function RegisterFrameType(type,const,funcs, ignoreReleaseFunc)
     elementTypes[type] = {
       constructor = const,
-      funcs = funcs
+      funcs = funcs,
+      ignoreReleaseFunc = ignoreReleaseFunc
     }
   end
 
@@ -57,7 +58,9 @@ function obj:Initialize()
       local element = elementTypes[type].constructor(name,parent,options)
       table.insert(framePool[type],element)
       element.free = false
-      element.Release = Release
+      if not elementTypes[type].ignoreReleaseFunc then
+        element.Release = Release
+      end
 
       if elementTypes[type].funcs then
         for _, funcName in ipairs(elementTypes[type].funcs) do

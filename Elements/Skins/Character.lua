@@ -2,7 +2,7 @@ local addon, ns = ...
 local L = ns.L
 local key = 'character'
 local name = 'Character'
-local obj = ns.CreateNewModule("Skins_"..key)
+local obj = ns.CreateNewModule("Skins_"..key, 2)
 
 ns.skins.RegisterSkin(key, name)
 
@@ -136,7 +136,7 @@ function obj:Initialize()
 
     local levelText = _G['CharacterLevelText']
     levelText:ClearAllPoints()
-    levelText:SetPoint("TOPLEFT", -22, -17)
+    levelText:SetPoint("TOPLEFT", -22, -14)
 
     skins.SkinPanelTabs('CharacterFrameTab%i', mainFrame.OofBackdrop,0,0)
 

@@ -1,5 +1,5 @@
 local addon, ns = ...
-local obj = ns.CreateNewModule("UI_Button")
+local obj = ns.CreateNewModule("UI_Button", -99)
 
 function obj:Initialize()
   local UIElements = ns.UIElements

@@ -2,7 +2,7 @@ local addon, ns = ...
 local L = ns.L
 local key = 'interface'
 local name = 'Interface'
-local obj = ns.CreateNewModule("Skins_"..key)
+local obj = ns.CreateNewModule("Skins_"..key, 2)
 
 ns.skins.RegisterSkin(key, name)
 

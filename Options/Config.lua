@@ -1,5 +1,5 @@
 local addon, ns = ...
-local obj = ns.CreateNewModule("Options_Config")
+local obj = ns.CreateNewModule("Options_Config", -9)
 
 function obj:Initialize()
   local AceConfig = LibStub("AceConfig-3.0")

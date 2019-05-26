@@ -1,7 +1,7 @@
 local addon, ns = ...
 
 local L = ns.L
-local obj = ns.CreateNewModule("UI_Texture")
+local obj = ns.CreateNewModule("UI_Texture", -99)
 
 function obj:Initialize()
 
