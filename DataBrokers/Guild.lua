@@ -25,9 +25,10 @@ function obj:Initialize()
   }
 
 
-  local totalMembers, onlineMembers = 0, 0
+  local totalMembers, onlineMembers, guildName = 0, 0, L["Guild"]
 
   local function UpdateGuildRoster()
+    guildName = GetGuildInfo('player')
     totalMembers, onlineMembers = GetNumGuildMembers()
     wipe(onlinePlayers)
     for i = 1 , totalMembers do
@@ -42,6 +43,7 @@ function obj:Initialize()
           classFileName = classFileName,
           level = level,
           rank = rank,
+          fullName = name
         })
       end
    end
@@ -53,7 +55,7 @@ function obj:Initialize()
 
     -- Header
     local lineNum = tooltip:AddLine()
-    tooltip:SetCell(lineNum, 1, L['Guild'], "LEFT", 3)
+    tooltip:SetCell(lineNum, 1, guildName, "LEFT", 3)
     tooltip:SetCell(lineNum, 4, string.format("%i/%i", onlineMembers, totalMembers), "RIGHT")
     tooltip:AddLine()
     tooltip:AddLine()
@@ -62,6 +64,14 @@ function obj:Initialize()
       local classColor =  C_ClassColor.GetClassColor(player.classFileName)
       local lineNum = tooltip:AddLine(player.level, string.format("\124T%s%s:15:15:0:0:20:20:2:18:2:18\124t %s", classIconPath, player.classFileName, classColor:WrapTextInColorCode(player.playerName)))
       tooltip:SetCell(lineNum, 4, string.format("|cffaaaaaa%s|r", player.zone), "RIGHT")
+      if tooltip.shiftDown then
+        -- Add Invite and Whisper Buttons
+        local lineNum = tooltip:AddLine()
+        tooltip:SetCell(lineNum, 1, L['Whisper'], 'CENTER', 2)
+        tooltip:SetCellScript(lineNum, 1, "OnMouseDown", function() SetItemRef( "player:"..player.fullName, format("|Hplayer:%1$s|h[%1$s]|h",player.fullName), "LeftButton" ) end )
+        tooltip:SetCell(lineNum, 3, L['Invite'], 'CENTER', 2)
+        tooltip:SetCellScript(lineNum, 3, "OnMouseDown", function() InviteUnit(player.fullName) end)
+      end
     end
 
   end
@@ -72,7 +82,7 @@ function obj:Initialize()
     tooltip:ApplyBackdrop()
     tooltip:Show()
 
-    tooltip:SetBodyFont(ns.GetFont(fontDB.defaultFont), 12)
+    tooltip:SetBodyFont(ns.GetFont(fontDB.defaultFont), 11)
 
     return tooltip
   end
@@ -82,6 +92,13 @@ function obj:Initialize()
     broker.elapsed = 0
     broker:SetScript("OnUpdate",function(self, elapsed)
       self.time = self.time + elapsed
+      if self.tooltip.shiftDown ~= IsShiftKeyDown() then
+        self.tooltip.shiftDown = IsShiftKeyDown()
+        self.tooltip:ReleaseTooltip()
+        self.tooltip = GetTooltip()
+        self.tooltip:SmartAnchorTo(self)
+        PopulateTooltip(self.tooltip)
+      end
       if self.time > 0.1 then
         if self:IsMouseOver() or self.tooltip:IsMouseOver() then
           self.elapsed = 0
@@ -99,6 +116,7 @@ function obj:Initialize()
     if self.tooltipActive then return end
 
     local tooltip = GetTooltip()
+    tooltip.shiftDown = IsShiftKeyDown()
     self.tooltipActive = true
     self.tooltip = tooltip
     tooltip:SmartAnchorTo(self)
